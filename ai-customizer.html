@@ -566,6 +566,13 @@
 
         // Initialize CodeMirror
         document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const session = JSON.parse(localStorage.getItem('session') || sessionStorage.getItem('session') || 'null');
+            if (!session || !session.loggedIn) {
+                // Redirect to auth page if not logged in
+                window.location.href = 'auth.html';
+                return;
+            }
             editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
                 mode: 'htmlmixed',
                 theme: 'dracula',
