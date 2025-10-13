@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Portfolio Customizer - Customize your portfolio with AI assistance in real-time">
+    <title>AI Portfolio Customizer - Live Code Editor with AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050816;
+            --text-light: #e5e7eb;
+            --text-dim: #9ca3af;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --border: rgba(0, 217, 255, 0.2);
+            --error: #ef4444;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0e27 0%, #050816 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .lang-switch {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 250px);
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* AI Chat Panel */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-message.user {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--primary);
+        }
+
+        .chat-message.ai {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--secondary);
+        }
+
+        .chat-message .label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .chat-message.user .label {
+            color: var(--primary);
+        }
+
+        .chat-message.ai .label {
+            color: var(--secondary);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-btn {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        textarea {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: none;
+            height: 60px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        /* Code Editor Panel */
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .CodeMirror {
+            height: 100% !important;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .editor-wrapper {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Preview Panel */
+        .preview-frame {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            overflow: auto;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .status-indicator.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-indicator.error .status-dot {
+            background: var(--error);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 1400px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .panel {
+                height: 500px;
+            }
+        }
+
+        .api-key-section {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .api-key-section h3 {
+            color: var(--accent);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-key-section input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text-light);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .api-key-section input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .api-key-section p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        .api-key-section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .api-key-section a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">🤖 AI Portfolio Customizer</div>
+            <div class="header-actions">
+                <button class="lang-switch" onclick="toggleLanguage()">العربية</button>
+                <a href="index.html" class="btn btn-secondary">← Back to Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1 data-en="AI-Powered Portfolio Customizer" data-ar="محرر البورتفوليو بالذكاء الصناعي">AI-Powered Portfolio Customizer</h1>
+            <p data-en="Customize your portfolio in real-time with AI assistance powered by Groq" data-ar="خصص بورتفوليوك مباشرة بمساعدة الذكاء الصناعي من Groq">Customize your portfolio in real-time with AI assistance powered by Groq</p>
+        </div>
+
+        <div class="main-layout">
+            <!-- AI Chat Panel -->
+            <div class="panel">
+                <h2 data-en="🧠 AI Assistant" data-ar="🧠 المساعد الذكي">🧠 AI Assistant</h2>
+                
+                <div class="api-key-section">
+                    <h3 data-en="Groq API Key" data-ar="مفتاح Groq API">Groq API Key</h3>
+                    <input type="password" id="apiKey" placeholder="gsk_..." data-en-placeholder="Enter your Groq API key" data-ar-placeholder="أدخل مفتاح Groq API">
+                    <p data-en="Get your free API key from" data-ar="احصل على مفتاح API مجاني من">Get your free API key from <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a></p>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="quickAction('color')" data-en="🎨 Change Colors" data-ar="🎨 غير الألوان">🎨 Change Colors</button>
+                    <button class="quick-btn" onclick="quickAction('font')" data-en="✍️ Change Font" data-ar="✍️ غير الخط">✍️ Change Font</button>
+                    <button class="quick-btn" onclick="quickAction('section')" data-en="➕ Add Section" data-ar="➕ أضف قسم">➕ Add Section</button>
+                    <button class="quick-btn" onclick="quickAction('animation')" data-en="✨ Add Animation" data-ar="✨ أضف حركة">✨ Add Animation</button>
+                </div>
+
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-message ai">
+                        <div class="label" data-en="AI Assistant" data-ar="المساعد الذكي">AI Assistant</div>
+                        <div data-en="Hello! I'm your AI assistant powered by Groq's Llama 3.3 70B. I can help you customize your portfolio by modifying colors, fonts, adding sections, animations, and more. Just tell me what you want to change!" data-ar="مرحباً! أنا مساعدك الذكي المدعوم بـ Llama 3.3 70B من Groq. يمكنني مساعدتك في تخصيص بورتفوليوك بتعديل الألوان والخطوط وإضافة أقسام وحركات والمزيد. فقط أخبرني بما تريد تغييره!">Hello! I'm your AI assistant powered by Groq's Llama 3.3 70B. I can help you customize your portfolio by modifying colors, fonts, adding sections, animations, and more. Just tell me what you want to change!</div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <textarea id="userInput" placeholder="Ask AI to customize your portfolio..." data-en-placeholder="Ask AI to customize your portfolio..." data-ar-placeholder="اسأل الذكاء الصناعي لتخصيص بورتفوليوك..."></textarea>
+                    <button class="btn" onclick="sendMessage()" id="sendBtn" data-en="Send" data-ar="إرسال">Send</button>
+                </div>
+            </div>
+
+            <!-- Code Editor Panel -->
+            <div class="panel">
+                <div class="editor-header">
+                    <h2 data-en="💻 Code Editor" data-ar="💻 محرر الكود">💻 Code Editor</h2>
+                    <div class="editor-actions">
+                        <button class="icon-btn" onclick="copyCode()" data-en="📋 Copy" data-ar="📋 نسخ">📋 Copy</button>
+                        <button class="icon-btn" onclick="downloadCode()" data-en="💾 Download" data-ar="💾 تحميل">💾 Download</button>
+                        <button class="icon-btn" onclick="resetCode()" data-en="🔄 Reset" data-ar="🔄 إعادة">🔄 Reset</button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <textarea id="codeEditor"></textarea>
+                </div>
+            </div>
+
+            <!-- Live Preview Panel -->
+            <div class="panel">
+                <div class="editor-header">
+                    <h2 data-en="👁️ Live Preview" data-ar="👁️ معاينة مباشرة">👁️ Live Preview</h2>
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span data-en="Live" data-ar="مباشر">Live</span>
+                    </div>
+                </div>
+                <iframe class="preview-frame" id="previewFrame"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let editor;
+        let currentLanguage = 'en';
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        // Initialize CodeMirror
+        document.addEventListener('DOMContentLoaded', function() {
+            editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
+                mode: 'htmlmixed',
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseTags: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                indentUnit: 4,
+                tabSize: 4,
+                lineWrapping: true
+            });
+
+            // Set initial template
+            const initialCode = getPortfolioTemplate();
+            editor.setValue(initialCode);
+
+            // Update preview on change
+            editor.on('change', function() {
+                updatePreview();
+            });
+
+            // Initial preview
+            updatePreview();
+
+            // Load saved API key
+            const savedKey = localStorage.getItem('groq_api_key');
+            if (savedKey) {
+                document.getElementById('apiKey').value = savedKey;
+            }
+
+            // Save API key on change
+            document.getElementById('apiKey').addEventListener('change', function() {
+                localStorage.setItem('groq_api_key', this.value);
+            });
+
+            // Enter to send
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+
+        function getPortfolioTemplate() {
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #764ba2;
+            margin-bottom: 1rem;
+        }
+
+        .bio {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 0.5rem;
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .skill:hover {
+            transform: translateY(-5px);
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project {
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .project h3 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>John Doe</h1>
+            <div class="subtitle">Full Stack Developer</div>
+            <p class="bio">Passionate developer with 5+ years of experience building web applications and solving complex problems.</p>
+        </header>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <div class="skill">HTML & CSS</div>
+                <div class="skill">JavaScript</div>
+                <div class="skill">React</div>
+                <div class="skill">Node.js</div>
+                <div class="skill">Python</div>
+                <div class="skill">SQL</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Projects</h2>
+            <div class="projects">
+                <div class="project">
+                    <h3>E-Commerce Platform</h3>
+                    <p>Built a full-featured online store with payment integration and admin dashboard.</p>
+                </div>
+                <div class="project">
+                    <h3>Task Management App</h3>
+                    <p>Developed a collaborative task manager with real-time updates and team features.</p>
+                </div>
+                <div class="project">
+                    <h3>Portfolio Generator</h3>
+                    <p>Created an AI-powered tool to help developers build beautiful portfolios.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section contact">
+            <h2>Contact Me</h2>
+            <p>Let's work together on your next project!</p>
+            <div class="contact-links">
+                <a href="mailto:john@example.com" class="contact-btn">Email</a>
+                <a href="#" class="contact-btn">LinkedIn</a>
+                <a href="#" class="contact-btn">GitHub</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+        }
+
+        function updatePreview() {
+            const preview = document.getElementById('previewFrame');
+            const code = editor.getValue();
+            preview.srcdoc = code;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (!message) return;
+
+            if (!apiKey) {
+                alert(currentLanguage === 'en' ? 
+                    'Please enter your Groq API key first!' : 
+                    'الرجاء إدخال مفتاح Groq API أولاً!');
+                return;
+            }
+
+            // Add user message
+            addChatMessage('user', message);
+            input.value = '';
+
+            // Disable send button
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<span class="loading"></span>';
+
+            try {
+                const currentCode = editor.getValue();
+                const response = await callGroqAPI(apiKey, message, currentCode);
+                
+                // Add AI response
+                addChatMessage('ai', response.message);
+
+                // Apply code changes if any
+                if (response.code) {
+                    editor.setValue(response.code);
+                    updatePreview();
+                }
+            } catch (error) {
+                addChatMessage('ai', `Error: ${error.message}`);
+                console.error('Groq API Error:', error);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = currentLanguage === 'en' ? 'Send' : 'إرسال';
+            }
+        }
+
+        async function callGroqAPI(apiKey, userMessage, currentCode) {
+            const systemPrompt = `You are an expert web developer assistant. Help users customize their portfolio HTML code.
+When the user asks for changes:
+1. Analyze the current code
+2. Make the requested modifications
+3. Return the complete modified HTML code
+4. Explain what you changed
+
+Always return your response in this JSON format:
+{
+    "message": "Explanation of changes made",
+    "code": "Complete modified HTML code (or null if just answering questions)"
+}
+
+Current code:
+${currentCode}`;
+
+            const response = await fetch(GROQ_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userMessage }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 4000
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'API request failed');
+            }
+
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+
+            // Try to parse JSON response
+            try {
+                return JSON.parse(aiResponse);
+            } catch {
+                // If not JSON, treat as plain message
+                return { message: aiResponse, code: null };
+            }
+        }
+
+        function addChatMessage(type, content) {
+            const container = document.getElementById('chatContainer');
+            const message = document.createElement('div');
+            message.className = `chat-message ${type}`;
+            
+            const label = document.createElement('div');
+            label.className = 'label';
+            label.textContent = type === 'user' ? 
+                (currentLanguage === 'en' ? 'You' : 'أنت') : 
+                (currentLanguage === 'en' ? 'AI Assistant' : 'المساعد الذكي');
+            
+            const text = document.createElement('div');
+            text.textContent = content;
+            
+            message.appendChild(label);
+            message.appendChild(text);
+            container.appendChild(message);
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function quickAction(action) {
+            const actions = {
+                color: currentLanguage === 'en' ? 
+                    'Change the color scheme to a modern blue and orange gradient' :
+                    'غير نظام الألوان إلى تدرج أزرق وبرتقالي عصري',
+                font: currentLanguage === 'en' ?
+                    'Change the font to a more modern sans-serif font' :
+                    'غير الخط إلى خط sans-serif عصري',
+                section: currentLanguage === 'en' ?
+                    'Add a new "Experience" section with a timeline layout' :
+                    'أضف قسم "الخبرات" جديد بتصميم خط زمني',
+                animation: currentLanguage === 'en' ?
+                    'Add smooth animations to all sections on scroll' :
+                    'أضف حركات سلسة لجميع الأقسام عند التمرير'
+            };
+
+            document.getElementById('userInput').value = actions[action];
+            sendMessage();
+        }
+
+        function copyCode() {
+            const code = editor.getValue();
+            navigator.clipboard.writeText(code).then(() => {
+                alert(currentLanguage === 'en' ? 'Code copied to clipboard!' : 'تم نسخ الكود!');
+            });
+        }
+
+        function downloadCode() {
+            const code = editor.getValue();
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'portfolio.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function resetCode() {
+            if (confirm(currentLanguage === 'en' ? 
+                'Reset to default template?' : 
+                'إعادة تعيين إلى القالب الافتراضي؟')) {
+                editor.setValue(getPortfolioTemplate());
+                updatePreview();
+            }
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${currentLanguage}`);
+            });
+
+            document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+                el.placeholder = el.getAttribute(`data-${currentLanguage}-placeholder`);
+            });
+
+            // Update language button
+            document.querySelector('.lang-switch').textContent = 
+                currentLanguage === 'en' ? 'العربية' : 'English';
+        }
+    </script>
+</body>
+</html>
+

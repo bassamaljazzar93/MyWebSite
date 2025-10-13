@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up or login to create your AI-powered portfolio">
+    <title>Sign Up / Login - AI Portfolio Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050816;
+            --text-light: #e5e7eb;
+            --text-dim: #9ca3af;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --border: rgba(0, 217, 255, 0.2);
+            --error: #ef4444;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0e27 0%, #050816 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.875rem;
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-dim);
+            opacity: 0.6;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.875rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 0.5rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .checkbox-group a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-switch:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 1rem;
+            }
+
+            .auth-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .lang-switch,
+            .back-link {
+                top: 1rem;
+            }
+
+            .lang-switch {
+                right: 1rem;
+            }
+
+            .back-link {
+                left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <a href="index.html" class="back-link">
+        <span>←</span>
+        <span data-en="Back to Home" data-ar="العودة للرئيسية">Back to Home</span>
+    </a>
+
+    <button class="lang-switch" onclick="toggleLanguage()">العربية</button>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <h1 data-en="🚀 AI Portfolio Builder" data-ar="🚀 منشئ البورتفوليو بالذكاء الصناعي">🚀 AI Portfolio Builder</h1>
+                <p data-en="Create your stunning portfolio in minutes" data-ar="أنشئ بورتفوليوك المذهل في دقائق">Create your stunning portfolio in minutes</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('login')" id="loginTab" data-en="Login" data-ar="تسجيل الدخول">Login</button>
+                <button class="tab-btn" onclick="switchTab('signup')" id="signupTab" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+                    <input type="email" id="loginEmail" required data-en-placeholder="Enter your email" data-ar-placeholder="أدخل بريدك الإلكتروني" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Password" data-ar="كلمة المرور">Password</label>
+                    <input type="password" id="loginPassword" required data-en-placeholder="Enter your password" data-ar-placeholder="أدخل كلمة المرور" placeholder="Enter your password">
+                    <div class="error-message" id="loginError"></div>
+                    <div class="success-message" id="loginSuccess"></div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe" data-en="Remember me" data-ar="تذكرني">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn" id="loginBtn" data-en="Login" data-ar="تسجيل الدخول">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" style="display: none;" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label data-en="Full Name" data-ar="الاسم الكامل">Full Name</label>
+                    <input type="text" id="signupName" required data-en-placeholder="Enter your full name" data-ar-placeholder="أدخل اسمك الكامل" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+                    <input type="email" id="signupEmail" required data-en-placeholder="Enter your email" data-ar-placeholder="أدخل بريدك الإلكتروني" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Password" data-ar="كلمة المرور">Password</label>
+                    <input type="password" id="signupPassword" required minlength="8" data-en-placeholder="Create a strong password (8+ characters)" data-ar-placeholder="أنشئ كلمة مرور قوية (8+ حروف)" placeholder="Create a strong password (8+ characters)">
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Confirm Password" data-ar="تأكيد كلمة المرور">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" required data-en-placeholder="Re-enter your password" data-ar-placeholder="أعد إدخال كلمة المرور" placeholder="Re-enter your password">
+                    <div class="error-message" id="signupError"></div>
+                    <div class="success-message" id="signupSuccess"></div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">
+                        <span data-en="I agree to the" data-ar="أوافق على">I agree to the</span>
+                        <a href="#" data-en="Terms & Conditions" data-ar="الشروط والأحكام">Terms & Conditions</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn" id="signupBtn" data-en="Create Account" data-ar="إنشاء حساب">Create Account</button>
+            </form>
+
+            <div class="divider">
+                <span data-en="Or continue with" data-ar="أو تابع مع">Or continue with</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn" onclick="socialLogin('google')">
+                    <span>🔵</span>
+                    <span>Google</span>
+                </button>
+                <button class="social-btn" onclick="socialLogin('github')">
+                    <span>⚫</span>
+                    <span>GitHub</span>
+                </button>
+            </div>
+
+            <div class="footer-links">
+                <a href="#" data-en="Forgot Password?" data-ar="نسيت كلمة المرور؟">Forgot Password?</a>
+                <span>•</span>
+                <a href="index.html" data-en="Back to Home" data-ar="العودة للرئيسية">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'en';
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+            }
+
+            // Clear error messages
+            document.querySelectorAll('.error-message, .success-message').forEach(el => {
+                el.classList.remove('show');
+            });
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorEl = document.getElementById('loginError');
+            const successEl = document.getElementById('loginSuccess');
+            const btn = document.getElementById('loginBtn');
+
+            // Clear previous messages
+            errorEl.classList.remove('show');
+            successEl.classList.remove('show');
+
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = currentLanguage === 'en' ? 'Logging in...' : 'جاري تسجيل الدخول...';
+
+            // Simulate login (in real app, this would be an API call)
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    // Save session
+                    const session = {
+                        email: user.email,
+                        name: user.name,
+                        loggedIn: true,
+                        timestamp: Date.now()
+                    };
+
+                    if (rememberMe) {
+                        localStorage.setItem('session', JSON.stringify(session));
+                    } else {
+                        sessionStorage.setItem('session', JSON.stringify(session));
+                    }
+
+                    successEl.textContent = currentLanguage === 'en' ? 
+                        'Login successful! Redirecting...' : 
+                        'تم تسجيل الدخول بنجاح! جاري التحويل...';
+                    successEl.classList.add('show');
+
+                    // Redirect to customizer
+                    setTimeout(() => {
+                        window.location.href = 'ai-customizer.html';
+                    }, 1500);
+                } else {
+                    errorEl.textContent = currentLanguage === 'en' ? 
+                        'Invalid email or password' : 
+                        'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+                    errorEl.classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = currentLanguage === 'en' ? 'Login' : 'تسجيل الدخول';
+                }
+            }, 1000);
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const errorEl = document.getElementById('signupError');
+            const successEl = document.getElementById('signupSuccess');
+            const btn = document.getElementById('signupBtn');
+
+            // Clear previous messages
+            errorEl.classList.remove('show');
+            successEl.classList.remove('show');
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                errorEl.textContent = currentLanguage === 'en' ? 
+                    'Passwords do not match' : 
+                    'كلمات المرور غير متطابقة';
+                errorEl.classList.add('show');
+                return;
+            }
+
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = currentLanguage === 'en' ? 'Creating account...' : 'جاري إنشاء الحساب...';
+
+            // Simulate signup (in real app, this would be an API call)
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Check if email already exists
+                if (users.find(u => u.email === email)) {
+                    errorEl.textContent = currentLanguage === 'en' ? 
+                        'Email already registered' : 
+                        'البريد الإلكتروني مسجل مسبقاً';
+                    errorEl.classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = currentLanguage === 'en' ? 'Create Account' : 'إنشاء حساب';
+                    return;
+                }
+
+                // Add new user
+                users.push({ name, email, password, createdAt: Date.now() });
+                localStorage.setItem('users', JSON.stringify(users));
+
+                successEl.textContent = currentLanguage === 'en' ? 
+                    'Account created successfully! Redirecting to login...' : 
+                    'تم إنشاء الحساب بنجاح! جاري التحويل لتسجيل الدخول...';
+                successEl.classList.add('show');
+
+                // Switch to login tab after 2 seconds
+                setTimeout(() => {
+                    switchTab('login');
+                    document.getElementById('loginEmail').value = email;
+                    btn.disabled = false;
+                    btn.textContent = currentLanguage === 'en' ? 'Create Account' : 'إنشاء حساب';
+                }, 2000);
+            }, 1000);
+        }
+
+        function socialLogin(provider) {
+            alert(currentLanguage === 'en' ? 
+                `${provider} login will be available soon!` : 
+                `تسجيل الدخول عبر ${provider} سيكون متاحاً قريباً!`);
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${currentLanguage}`);
+            });
+
+            document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+                el.placeholder = el.getAttribute(`data-${currentLanguage}-placeholder`);
+            });
+
+            // Update language button
+            document.querySelector('.lang-switch').textContent = 
+                currentLanguage === 'en' ? 'العربية' : 'English';
+        }
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const session = JSON.parse(localStorage.getItem('session') || sessionStorage.getItem('session') || 'null');
+            if (session && session.loggedIn) {
+                // Redirect to customizer if already logged in
+                window.location.href = 'ai-customizer.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
