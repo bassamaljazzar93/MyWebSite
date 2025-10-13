@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Mechatronics Engineer with 8+ years in robotics, automation, and innovation. Expert in 3D design, Python development, and complex system analysis. Creator of Bu Saif humanoid robot and contributor to US Patent 11573635.">
-    <meta name="keywords" content="Mechatronics Engineer, Robotics, Automation, Python, 3D Design, Bu Saif, UAE, Abu Dhabi">
-    <meta name="author" content="Bassam Walid Aljazzar">
-    <title>Bassam Aljazzar - Mechatronics Engineer Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bassam Aljazzar - Mechatronics Engineer with 8+ years in robotics, automation, and innovation">
+    <title>Bassam Aljazzar - Mechatronics Engineer</title>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.76/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,619 +14,1318 @@
             box-sizing: border-box;
         }
 
-        body {
-            background-color: #0a0a0a;
-            color: #00ff00;
-            font-family: 'Courier New', 'Monaco', monospace;
-            overflow: hidden;
-            height: 100vh;
-            max-height: 100vh;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary: #00d9ff;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050816;
+            --text-light: #e5e7eb;
+            --text-dim: #9ca3af;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --border: rgba(0, 217, 255, 0.2);
         }
 
-        /* Header */
-        .header {
-            background-color: #0f0f0f;
-            border-bottom: 2px solid #00ff00;
-            padding: 15px 30px;
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0e27 0%, #050816 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .header h1 {
-            color: #00ff00;
-            font-size: 24px;
-            margin: 0;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .header .subtitle {
-            color: #888;
-            font-size: 14px;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
         }
 
-        .nav {
-            color: #888;
-            font-size: 12px;
-        }
-
-        .nav a {
-            color: #00ff00;
+        .nav-links a {
+            color: var(--text-light);
             text-decoration: none;
-            margin: 0 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .lang-switch {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
             cursor: pointer;
         }
 
-        .nav a:hover {
-            color: #5BCEFA;
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s ease;
         }
 
-        /* Main Layout */
-        .main-container {
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
             display: flex;
-            height: calc(100vh - 70px);
-            max-height: calc(100vh - 70px);
-            gap: 0;
-            overflow: hidden;
-        }
-
-        /* 3D Viewer Section (Left) */
-        .viewer-section {
-            flex: 0 0 40%;
-            background-color: #0f0f0f;
-            border-right: 2px solid #00ff00;
-            display: flex;
-            flex-direction: column;
             align-items: center;
+            padding-top: 80px;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
             justify-content: center;
-            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero-3d {
+            height: 600px;
+            border-radius: 20px;
             overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         spline-viewer {
             width: 100%;
             height: 100%;
-            border: none;
-            pointer-events: auto;
-            touch-action: pan-x pan-y pinch-zoom;
         }
 
-        /* Terminal Section (Right) */
-        .terminal-section {
-            flex: 1;
-            background-color: #0a0a0a;
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.2);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card .period {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .location {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 0.5rem 0;
+            color: var(--text-dim);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
             display: flex;
-            flex-direction: column;
-            padding: 20px;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 10px;
             overflow: hidden;
-            min-height: 0;
         }
 
-        .terminal-box {
-            background-color: #0f0f0f;
-            border: 2px solid #00ff00;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
+        .skill-progress {
             height: 100%;
-            max-height: 100%;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            overflow: hidden;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 1s ease;
         }
 
-        .terminal-header {
-            background-color: #1a1a1a;
-            padding: 10px 15px;
-            border-bottom: 1px solid #00ff00;
+        /* Projects */
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        [dir="rtl"] .project-card:hover {
+            transform: translateX(-10px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .project-status {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        /* Chatbot */
+        .chatbot-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            cursor: pointer;
+            font-size: 1.8rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
         }
 
-        .terminal-button {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ff5f56;
+        [dir="rtl"] .chatbot-button {
+            right: auto;
+            left: 2rem;
         }
 
-        .terminal-button:nth-child(2) {
-            background-color: #ffbd2e;
+        .chatbot-button:hover {
+            transform: scale(1.1);
         }
 
-        .terminal-button:nth-child(3) {
-            background-color: #27c93f;
+        .chatbot-window {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            width: 400px;
+            height: 600px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 998;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .terminal-title {
-            flex: 1;
-            text-align: center;
-            color: #888;
-            font-size: 12px;
+        [dir="rtl"] .chatbot-window {
+            right: auto;
+            left: 2rem;
         }
 
-        .terminal-output {
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            color: var(--primary);
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden;
-            padding: 20px;
-            padding-bottom: 10px;
-            font-size: 14px;
-            min-height: 0;
-            -webkit-overflow-scrolling: touch;
+            padding: 1.5rem;
         }
 
-        .terminal-output::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .terminal-output::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        .terminal-output::-webkit-scrollbar-thumb {
-            background: #00ff00;
-            border-radius: 4px;
-        }
-
-        .output-line {
-            margin-bottom: 8px;
-            word-wrap: break-word;
-        }
-
-        .prompt-line {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .username {
-            color: #5BCEFA;
-        }
-
-        .separator {
-            color: #fff;
-        }
-
-        .directory {
-            color: #F5A9B8;
-        }
-
-        .command {
-            color: #ffa500;
-        }
-
-        .terminal-footer {
-            background-color: #1a1a1a;
-            padding: 15px;
-            border-top: 1px solid #00ff00;
-            flex-shrink: 0;
-            min-height: 60px;
-        }
-
-        .welcome-text {
-            color: #888;
-            font-size: 12px;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        .welcome-text .highlight {
-            color: #ffa500;
-            font-weight: bold;
-        }
-
-        /* Chat mode styles */
         .chat-message {
-            margin: 10px 0;
-            padding: 10px;
-            border-left: 3px solid #5BCEFA;
-            background: rgba(91, 206, 250, 0.05);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 80%;
         }
 
-        .ai-thinking {
-            animation: pulse 1.5s infinite;
+        .chat-message.user {
+            background: rgba(0, 217, 255, 0.1);
+            margin-left: auto;
+            border: 1px solid var(--primary);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        [dir="rtl"] .chat-message.user {
+            margin-left: 0;
+            margin-right: auto;
         }
 
-        .terminal-input-line {
+        .chat-message.ai {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--secondary);
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
             display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #0a0a0a;
-            border-top: 1px solid #333;
-            flex-shrink: 0;
-            min-height: 50px;
-            cursor: text;
-            -webkit-tap-highlight-color: transparent;
+            gap: 0.5rem;
         }
 
-        .terminal-input-line:hover {
-            background-color: #0f0f0f;
-        }
-
-        #commandInput {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #00ff00;
-            font-family: inherit;
-            font-size: inherit;
+        .chatbot-input input {
             flex: 1;
-            caret-color: #00ff00;
-            margin-left: 5px;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.75rem 1rem;
+            color: var(--text-light);
+            font-family: inherit;
         }
 
-        #commandInput:focus {
+        .chatbot-input input:focus {
             outline: none;
+            border-color: var(--primary);
+        }
+
+        .chatbot-input button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 20px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-dim);
         }
 
         /* Responsive */
-        @media (max-width: 1200px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .viewer-section {
-                flex: 0 0 300px;
-                min-height: 300px;
-                border-right: none;
-                border-bottom: 2px solid #00ff00;
-            }
-
-            .terminal-section {
-                flex: 1;
-                min-height: 400px;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .terminal-box {
-                max-height: calc(100vh - 350px);
-                min-height: 400px;
-            }
-
-            .terminal-output {
-                font-size: 13px;
-                padding-bottom: 5px;
-            }
-
-            .terminal-footer {
-                flex-shrink: 0;
-            }
-        }
-
         @media (max-width: 768px) {
-            body {
-                padding: 0;
-                height: 100vh;
-                max-height: 100vh;
-                overflow: hidden;
+            section {
+                padding: 3rem 1rem;
             }
 
-            .main-container {
-                height: calc(100vh - 120px);
-                max-height: calc(100vh - 120px);
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 10px;
-                padding: 12px 15px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .header .subtitle {
-                font-size: 12px;
-            }
-
-            .nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                font-size: 11px;
-            }
-
-            .nav a {
-                margin: 0 5px;
-            }
-
-            .viewer-section {
-                flex: 0 0 250px;
-                min-height: 250px;
-            }
-
-            .terminal-section {
-                padding: 10px;
-                min-height: 350px;
-            }
-
-            .terminal-box {
-                border-radius: 0;
-                max-height: calc(100vh - 320px);
-                min-height: 350px;
-            }
-
-            .terminal-output {
-                padding: 15px;
-                padding-bottom: 5px;
-                font-size: 12px;
-                flex: 1;
-                min-height: 0;
-            }
-
-            .terminal-input-line {
-                padding: 12px;
-                font-size: 12px;
-                flex-shrink: 0;
-            }
-
-            .terminal-footer {
-                padding: 12px;
-                flex-shrink: 0;
-            }
-
-            .welcome-text {
-                font-size: 10px;
-            }
-
-            #commandInput {
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 18px;
-            }
-
-            .header .subtitle {
-                font-size: 11px;
-            }
-
-            .nav {
-                font-size: 10px;
-            }
-
-            .nav a {
-                margin: 2px 3px;
-            }
-
-            .viewer-section {
-                flex: 0 0 200px;
-                min-height: 200px;
-            }
-
-            .terminal-section {
-                padding: 5px;
-                min-height: 300px;
-            }
-
-            .terminal-box {
-                max-height: calc(100vh - 280px);
-                min-height: 300px;
-            }
-
-            .terminal-header {
-                padding: 8px 12px;
-                flex-shrink: 0;
-            }
-
-            .terminal-title {
-                font-size: 11px;
-            }
-
-            .terminal-output {
-                padding: 12px;
-                padding-bottom: 5px;
-                font-size: 11px;
-                flex: 1;
-                min-height: 0;
-            }
-
-            .terminal-input-line {
-                padding: 10px;
-                font-size: 11px;
-                flex-shrink: 0;
-            }
-
-            .terminal-footer {
-                padding: 10px;
-                flex-shrink: 0;
-            }
-
-            .welcome-text {
-                font-size: 9px;
-                line-height: 1.4;
-            }
-
-            #commandInput {
-                font-size: 11px;
-            }
-
-            .username, .directory, .separator {
-                font-size: 11px;
-            }
-
-            /* Make pre text smaller on mobile */
-            pre {
-                font-size: 0.5em !important;
-            }
-        }
-
-        /* Landscape mode for mobile */
-        @media (max-width: 900px) and (orientation: landscape) {
-            .main-container {
-                flex-direction: row;
-            }
-
-            .viewer-section {
-                flex: 0 0 35%;
-                border-right: 2px solid #00ff00;
-                border-bottom: none;
-            }
-
-            .terminal-section {
-                flex: 1;
-            }
-        }
-
-        /* Very small screens */
-        @media (max-width: 320px) {
-            .main-container {
-                height: calc(100vh - 100px);
-                max-height: calc(100vh - 100px);
-            }
-
-            .header h1 {
-                font-size: 16px;
-            }
-
-            .nav a {
-                font-size: 9px;
-                margin: 2px;
-            }
-
-            .viewer-section {
-                flex: 0 0 180px;
-                min-height: 180px;
-            }
-
-            .terminal-box {
-                max-height: calc(100vh - 250px);
-                min-height: 280px;
-            }
-
-            .terminal-output,
-            .terminal-input-line,
-            #commandInput {
-                font-size: 10px;
-            }
-
-            .terminal-output {
-                padding: 10px;
-                padding-bottom: 5px;
-            }
-
-            .welcome-text {
-                font-size: 8px;
-            }
-
-            .terminal-footer {
-                padding: 8px;
-                flex-shrink: 0;
-            }
-        }
-
-        /* iOS Safari fixes */
-        @supports (-webkit-touch-callout: none) {
-            body {
-                height: -webkit-fill-available;
-            }
-            
-            .main-container {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
                 height: calc(100vh - 70px);
-                height: calc(var(--vh, 1vh) * 100 - 70px);
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                transition: left 0.3s ease;
+            }
+
+            [dir="rtl"] .nav-links {
+                left: auto;
+                right: -100%;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            [dir="rtl"] .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-3d {
+                height: 400px;
+            }
+
+            .chatbot-window {
+                width: calc(100% - 2rem);
+                right: 1rem;
+                bottom: 6rem;
+            }
+
+            [dir="rtl"] .chatbot-window {
+                left: 1rem;
+                right: auto;
+            }
+
+            /* Live Demo Mobile Styles */
+            iframe[title="Portfolio Live Demo"] {
+                height: 500px !important;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            #services {
+                padding: 3rem 1rem !important;
+                margin: 1rem 0 !important;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div>
-            <h1>Bassam Walid Aljazzar</h1>
-            <div class="subtitle">Mechatronics Engineer</div>
-        </div>
-        <div class="nav">
-            <a onclick="executeNavCommand('help')">help</a> |
-            <a onclick="executeNavCommand('about')">about</a> |
-            <a onclick="executeNavCommand('cd experience')">experience</a> |
-            <a onclick="executeNavCommand('education')">education</a> |
-            <a onclick="executeNavCommand('skills')">skills</a> |
-            <a onclick="executeNavCommand('cd projects')">projects</a> |
-            <a onclick="executeNavCommand('contact')">contact</a> |
-            <a onclick="executeNavCommand('chatbot')" style="background: linear-gradient(90deg, #00ff00, #5BCEFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">🤖 chatbot</a> |
-            <a href="ai-customizer.html" style="background: linear-gradient(90deg, #ffa500, #ff1493); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">✨ AI Portfolio</a> |
-            <a onclick="executeNavCommand('clear')">clear</a>
-        </div>
-    </div>
+    <div class="bg-animation"></div>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- 3D Viewer Section (Left) -->
-        <div class="viewer-section">
-            <spline-viewer url="https://prod.spline.design/eBO7I-xKw00YnaYL/scene.splinecode"></spline-viewer>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-container">
+            <div class="logo" data-en="BASSAM ALJAZZAR" data-ar="بسام الجزار">BASSAM ALJAZZAR</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                <li><a href="#services" data-en="Services" data-ar="الخدمات">Services</a></li>
+                <li><a href="auth.html" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;" data-en="✨ AI Customizer" data-ar="✨ المحرر الذكي">✨ AI Customizer</a></li>
+                <li><a href="ai-playground.html" data-en="🎨 AI Playground" data-ar="🎨 ملعب AI">🎨 AI Playground</a></li>
+                <li><a href="#about" data-en="About" data-ar="نبذة">About</a></li>
+                <li><a href="#experience" data-en="Experience" data-ar="الخبرة">Experience</a></li>
+                <li><a href="#projects" data-en="Projects" data-ar="المشاريع">Projects</a></li>
+                <li><a href="#skills" data-en="Skills" data-ar="المهارات">Skills</a></li>
+                <li><a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a></li>
+            </ul>
+            <button class="lang-switch" id="langSwitch" onclick="toggleLanguage()">العربية</button>
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 data-en="Bassam Walid Aljazzar" data-ar="بسام وليد الجزار">Bassam Walid Aljazzar</h1>
+                <div class="subtitle" data-en="Mechatronics Engineer & AI Portfolio Designer" data-ar="مهندس ميكاترونكس ومصمم بورتفوليو بالذكاء الاصطناعي">Mechatronics Engineer & AI Portfolio Designer</div>
+                <p data-en="Expert in robotics, automation, and innovation with 8+ years of experience. Creator of Bu Saif humanoid robot and contributor to US Patent 11573635. Now offering custom AI-powered portfolio websites." data-ar="خبير في الروبوتات والأتمتة والابتكار مع أكثر من 8 سنوات من الخبرة. مبتكر روبوت بو سيف البشري ومساهم في براءة اختراع أمريكية رقم 11573635. أقدم الآن مواقع بورتفوليو مخصصة بالذكاء الاصطناعي.">
+                    Expert in robotics, automation, and innovation with 8+ years of experience. Creator of Bu Saif humanoid robot and contributor to US Patent 11573635. Now offering custom AI-powered portfolio websites.
+                </p>
+                <div class="hero-buttons">
+                    <a href="auth.html" class="btn btn-primary" data-en="🚀 Start Building Portfolio" data-ar="🚀 ابدأ بناء بورتفوليو">🚀 Start Building Portfolio</a>
+                    <a href="auth.html" class="btn btn-secondary" data-en="✨ Try AI Customizer" data-ar="✨ جرب المحرر الذكي">✨ Try AI Customizer</a>
+                    <a href="ai-playground.html" class="btn btn-secondary" data-en="🎨 AI Playground" data-ar="🎨 ملعب الذكاء">🎨 AI Playground</a>
+                    <a href="#contact" class="btn btn-secondary" data-en="Get In Touch" data-ar="تواصل معي">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-3d">
+                <spline-viewer url="https://prod.spline.design/eBO7I-xKw00YnaYL/scene.splinecode"></spline-viewer>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (SaaS) -->
+    <section id="services" style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(124, 58, 237, 0.05)); padding: 5rem 2rem; margin: 2rem auto; border-radius: 20px; max-width: 1400px;">
+        <h2 class="section-title" data-en="Professional Services" data-ar="الخدمات الاحترافية">Professional Services</h2>
+        
+        <div style="max-width: 900px; margin: 0 auto 3rem; text-align: center;">
+            <p style="font-size: 1.2rem; color: var(--text-dim); line-height: 1.8;" data-en="I offer custom portfolio website design services with interactive AI assistants. Transform your professional presence with cutting-edge technology." data-ar="أقدم خدمات تصميم مواقع بورتفوليو مخصصة مع مساعد ذكاء اصطناعي تفاعلي. حوّل حضورك المهني بتقنية متطورة.">
+                I offer custom portfolio website design services with interactive AI assistants. Transform your professional presence with cutting-edge technology.
+            </p>
         </div>
 
-        <!-- Terminal Section (Right) -->
-        <div class="terminal-section">
-            <div class="terminal-box">
-                <!-- Terminal Header -->
-                <div class="terminal-header">
-                    <div class="terminal-button"></div>
-                    <div class="terminal-button"></div>
-                    <div class="terminal-button"></div>
-                    <div class="terminal-title">bassam@portfolio:~</div>
+        <div class="cards-grid" style="max-width: 1400px; margin: 0 auto;">
+            <div class="card" style="border: 2px solid var(--primary); background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(124, 58, 237, 0.1));">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                <h3 data-en="AI-Powered Portfolios" data-ar="بورتفوليو بالذكاء الاصطناعي">AI-Powered Portfolios</h3>
+                <p data-en="Interactive portfolio websites with integrated AI chatbots that can answer questions about your experience, projects, and expertise 24/7." data-ar="مواقع بورتفوليو تفاعلية مع روبوت محادثة ذكي يجيب عن الأسئلة حول خبرتك ومشاريعك على مدار الساعة.">
+                    Interactive portfolio websites with integrated AI chatbots that can answer questions about your experience, projects, and expertise 24/7.
+                </p>
+                <ul style="margin-top: 1rem;">
+                    <li data-en="Custom AI training on your data" data-ar="تدريب مخصص للذكاء الاصطناعي على بياناتك">Custom AI training on your data</li>
+                    <li data-en="Multi-language support" data-ar="دعم متعدد اللغات">Multi-language support</li>
+                    <li data-en="3D interactive elements" data-ar="عناصر ثلاثية الأبعاد تفاعلية">3D interactive elements</li>
+                    <li data-en="Fully responsive design" data-ar="تصميم متجاوب بالكامل">Fully responsive design</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+                <h3 data-en="3D Design & Manufacturing" data-ar="التصميم والتصنيع ثلاثي الأبعاد">3D Design & Manufacturing</h3>
+                <p data-en="Professional 3D design services with laser cutting, engraving on wood, and 3D printing. From concept to physical product." data-ar="خدمات تصميم ثلاثي الأبعاد احترافية مع القطع والحفر بالليزر على الخشب والطباعة ثلاثية الأبعاد. من الفكرة إلى المنتج.">
+                    Professional 3D design services with laser cutting, engraving on wood, and 3D printing. From concept to physical product.
+                </p>
+                <ul style="margin-top: 1rem;">
+                    <li data-en="3D CAD design (SolidWorks, Fusion 360)" data-ar="تصميم CAD ثلاثي الأبعاد">3D CAD design (SolidWorks, Fusion 360)</li>
+                    <li data-en="Laser cutting & engraving on wood" data-ar="القطع والحفر بالليزر على الخشب">Laser cutting & engraving on wood</li>
+                    <li data-en="3D printing services" data-ar="خدمات الطباعة ثلاثية الأبعاد">3D printing services</li>
+                    <li data-en="Prototyping & production" data-ar="النماذج الأولية والإنتاج">Prototyping & production</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💡</div>
+                <h3 data-en="Innovation Consulting" data-ar="استشارات الابتكار">Innovation Consulting</h3>
+                <p data-en="Support for innovative projects and ideas. Technical consulting, project development, and turning your vision into reality." data-ar="دعم للمشاريع والأفكار المبتكرة. استشارات تقنية، تطوير المشاريع، وتحويل رؤيتك إلى واقع.">
+                    Support for innovative projects and ideas. Technical consulting, project development, and turning your vision into reality.
+                </p>
+                <ul style="margin-top: 1rem;">
+                    <li data-en="Technical feasibility studies" data-ar="دراسات الجدوى التقنية">Technical feasibility studies</li>
+                    <li data-en="Project development support" data-ar="دعم تطوير المشاريع">Project development support</li>
+                    <li data-en="Mechatronics consulting" data-ar="استشارات الميكاترونكس">Mechatronics consulting</li>
+                    <li data-en="Innovation workshops" data-ar="ورش عمل الابتكار">Innovation workshops</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border: 2px solid var(--accent);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                <h3 data-en="AI Playground" data-ar="ملعب الذكاء الاصطناعي">AI Playground</h3>
+                <p data-en="Access powerful AI tools for free! Create content, convert text to speech, and more with our AI playground." data-ar="استخدم أدوات ذكاء اصطناعي قوية مجاناً! أنشئ محتوى، حوّل النص لصوت، والمزيد في ملعب الذكاء الاصطناعي.">
+                    Access powerful AI tools for free! Create content, convert text to speech, and more with our AI playground.
+                </p>
+                <ul style="margin-top: 1rem;">
+                    <li data-en="Text Generation (GPT)" data-ar="توليد النصوص">Text Generation (GPT)</li>
+                    <li data-en="Text-to-Speech" data-ar="تحويل النص لصوت">Text-to-Speech</li>
+                    <li data-en="Safe & Moderated" data-ar="آمن ومُراقب">Safe & Moderated</li>
+                </ul>
+                <a href="ai-playground.html" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-block; width: 100%; text-align: center;" data-en="🚀 Try AI Playground" data-ar="🚀 جرّب ملعب الذكاء الاصطناعي">🚀 Try AI Playground</a>
+            </div>
+
+            <div class="card">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                <h3 data-en="Flexible Delivery" data-ar="تسليم مرن">Flexible Delivery</h3>
+                <p data-en="Professional work takes time. Get your portfolio website delivered within 2-4 weeks, ensuring quality and attention to detail." data-ar="العمل الاحترافي يحتاج وقت. احصل على موقع بورتفوليو خلال 2-4 أسابيع، مع ضمان الجودة والاهتمام بالتفاصيل.">
+                    Professional work takes time. Get your portfolio website delivered within 2-4 weeks, ensuring quality and attention to detail.
+                </p>
+                <ul style="margin-top: 1rem;">
+                    <li data-en="2-4 weeks delivery" data-ar="تسليم خلال 2-4 أسابيع">2-4 weeks delivery</li>
+                    <li data-en="Quality assurance" data-ar="ضمان الجودة">Quality assurance</li>
+                    <li data-en="Free revisions included" data-ar="تعديلات مجانية مشمولة">Free revisions included</li>
+                    <li data-en="30 days support" data-ar="دعم لمدة 30 يوم">30 days support</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="#contact" class="btn btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem; display: inline-block;" data-en="🎨 Get Your AI Portfolio" data-ar="🎨 احصل على بورتفوليو ذكي">🎨 Get Your AI Portfolio</a>
+        </div>
+
+        <!-- Pricing Section -->
+        <div style="margin-top: 4rem; max-width: 1400px; margin-left: auto; margin-right: auto;">
+            <h3 class="section-title" style="font-size: 2rem;" data-en="Pricing Plans" data-ar="خطط الأسعار">Pricing Plans</h3>
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 900px;">
+                <div class="card">
+                    <h3 style="color: var(--text-light);" data-en="Basic" data-ar="أساسي">Basic</h3>
+                    <div style="font-size: 2.5rem; color: var(--primary); margin: 1rem 0;">$299</div>
+                    <ul>
+                        <li data-en="Single page portfolio" data-ar="بورتفوليو صفحة واحدة">Single page portfolio</li>
+                        <li data-en="Basic AI chatbot" data-ar="روبوت محادثة أساسي">Basic AI chatbot</li>
+                        <li data-en="Responsive design" data-ar="تصميم متجاوب">Responsive design</li>
+                        <li data-en="Contact form" data-ar="نموذج تواصل">Contact form</li>
+                        <li data-en="5 sections" data-ar="5 أقسام">5 sections</li>
+                        <li data-en="2 weeks delivery" data-ar="تسليم خلال أسبوعين">2 weeks delivery</li>
+                    </ul>
                 </div>
 
-                <!-- Terminal Output -->
-                <div class="terminal-output" id="terminalOutput">
-                    <!-- Output will be inserted here -->
+                <div class="card" style="border: 2px solid var(--accent); transform: scale(1.05); background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(124, 58, 237, 0.1));">
+                    <div style="background: var(--accent); color: white; padding: 0.3rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;" data-en="POPULAR" data-ar="الأشهر">POPULAR</div>
+                    <h3 style="color: var(--text-light);" data-en="Professional" data-ar="محترف">Professional</h3>
+                    <div style="font-size: 2.5rem; color: var(--accent); margin: 1rem 0;">$599</div>
+                    <ul>
+                        <li data-en="Multi-page portfolio" data-ar="بورتفوليو متعدد الصفحات">Multi-page portfolio</li>
+                        <li data-en="Advanced AI chatbot" data-ar="روبوت محادثة متقدم">Advanced AI chatbot</li>
+                        <li data-en="3D interactive elements" data-ar="عناصر 3D تفاعلية">3D interactive elements</li>
+                        <li data-en="Multi-language (2 langs)" data-ar="متعدد اللغات (لغتين)">Multi-language (2 langs)</li>
+                        <li data-en="Analytics integration" data-ar="تكامل التحليلات">Analytics integration</li>
+                        <li data-en="Custom animations" data-ar="حركات مخصصة">Custom animations</li>
+                        <li data-en="3-4 weeks delivery" data-ar="تسليم خلال 3-4 أسابيع">3-4 weeks delivery</li>
+                        <li data-en="Priority support (45 days)" data-ar="دعم أولوية (45 يوم)">Priority support (45 days)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div style="margin-top: 4rem; padding: 3rem; background: var(--card-bg); border-radius: 15px; border: 1px solid var(--border); max-width: 1400px; margin-left: auto; margin-right: auto;">
+            <h3 class="section-title" style="font-size: 2rem;" data-en="Why Choose My Service?" data-ar="لماذا تختار خدمتي؟">Why Choose My Service?</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Professional Quality" data-ar="جودة احترافية">Professional Quality</h4>
+                    <p style="color: var(--text-dim);" data-en="Attention to detail and quality" data-ar="اهتمام بالتفاصيل والجودة">Attention to detail and quality</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="AI Integration" data-ar="تكامل الذكاء الاصطناعي">AI Integration</h4>
+                    <p style="color: var(--text-dim);" data-en="Smart chatbot trained on your data" data-ar="روبوت ذكي مدرب على بياناتك">Smart chatbot trained on your data</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Multi-Language" data-ar="متعدد اللغات">Multi-Language</h4>
+                    <p style="color: var(--text-dim);" data-en="Full RTL support for Arabic" data-ar="دعم كامل للغة العربية RTL">Full RTL support for Arabic</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Fully Responsive" data-ar="متجاوب تماماً">Fully Responsive</h4>
+                    <p style="color: var(--text-dim);" data-en="Perfect on all devices" data-ar="مثالي على جميع الأجهزة">Perfect on all devices</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Custom Design" data-ar="تصميم مخصص">Custom Design</h4>
+                    <p style="color: var(--text-dim);" data-en="Unique design for your brand" data-ar="تصميم فريد لعلامتك التجارية">Unique design for your brand</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔧</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="3D Manufacturing" data-ar="التصنيع ثلاثي الأبعاد">3D Manufacturing</h4>
+                    <p style="color: var(--text-dim);" data-en="Laser cutting & 3D printing" data-ar="القطع بالليزر والطباعة ثلاثية الأبعاد">Laser cutting & 3D printing</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💡</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Innovation Support" data-ar="دعم الابتكار">Innovation Support</h4>
+                    <p style="color: var(--text-dim);" data-en="Project consulting & development" data-ar="استشارات وتطوير المشاريع">Project consulting & development</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛠️</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Technical Support" data-ar="الدعم التقني">Technical Support</h4>
+                    <p style="color: var(--text-dim);" data-en="30 days support included" data-ar="دعم 30 يوم مشمول">30 days support included</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Demo Showcase -->
+        <div style="margin-top: 4rem; padding: 3rem; background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(124, 58, 237, 0.05)); border-radius: 20px; border: 1px solid var(--border); max-width: 1400px; margin-left: auto; margin-right: auto;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h3 class="section-title" style="font-size: 2rem;" data-en="🎬 Live Demo: See My Work in Action" data-ar="🎬 عرض مباشر: شاهد عملي بنفسك">🎬 Live Demo: See My Work in Action</h3>
+                <p style="color: var(--text-dim); font-size: 1.1rem; max-width: 700px; margin: 0 auto;" data-en="This is a live example of a portfolio I created. Explore the interactive features, AI chatbot, and responsive design!" data-ar="هذا مثال حي على بورتفوليو قمت بإنشائه. استكشف الميزات التفاعلية، روبوت المحادثة الذكي، والتصميم المتجاوب!">
+                    This is a live example of a portfolio I created. Explore the interactive features, AI chatbot, and responsive design!
+                </p>
+            </div>
+
+            <!-- Live Preview Container -->
+            <div style="position: relative; background: var(--bg-dark); border: 2px solid var(--primary); border-radius: 15px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);">
+                <!-- Browser-like Header -->
+                <div style="background: rgba(0, 217, 255, 0.1); padding: 0.8rem 1.5rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border);">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 0.3rem 1rem; border-radius: 20px; color: var(--text-dim); font-size: 0.9rem;">
+                        🌐 bassamaljazzar93.github.io/portfolio/
+                    </div>
+                    <a href="https://bassamaljazzar93.github.io/portfolio/" target="_blank" style="background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 20px; text-decoration: none; font-weight: 600; transition: all 0.3s; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" data-en="Open Full View ↗" data-ar="فتح بالكامل ↗">
+                        Open Full View ↗
+                    </a>
                 </div>
 
-                <!-- Terminal Input -->
-                <div class="terminal-input-line">
-                    <span class="username">bassam@portfolio</span>
-                    <span class="separator">:</span>
-                    <span class="directory" id="currentDir">~</span>
-                    <span class="separator">$ </span>
-                    <input type="text" id="commandInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                <!-- iframe Preview -->
+                <div style="position: relative; width: 100%; height: 600px; overflow: hidden;">
+                    <iframe 
+                        src="https://bassamaljazzar93.github.io/portfolio/" 
+                        style="width: 100%; height: 100%; border: none; display: block;"
+                        title="Portfolio Live Demo"
+                        loading="lazy">
+                    </iframe>
                 </div>
 
-                <!-- Terminal Footer (Fixed Welcome Text) -->
-                <div class="terminal-footer">
-                    <div class="welcome-text">
-                        Type <span class="highlight">'help'</span> to see all available commands | 
-                        Type <span class="highlight">'chatbot'</span> to chat with AI 🤖 | 
-                        Type <span class="highlight">'ls'</span> to explore the file system<br>
-                        Tip: Use <span class="highlight">TAB</span> for auto-completion and <span class="highlight">↑↓</span> arrows for command history
+                <!-- Mobile View Toggle (Optional) -->
+                <div style="background: rgba(0, 217, 255, 0.05); padding: 1rem; text-align: center; border-top: 1px solid var(--border);">
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; align-items: center;">
+                        <button onclick="resizePreview('100%', '600px')" style="background: var(--card-bg); border: 1px solid var(--border); color: var(--text-light); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            🖥️ <span data-en="Desktop" data-ar="سطح المكتب">Desktop</span>
+                        </button>
+                        <button onclick="resizePreview('768px', '600px')" style="background: var(--card-bg); border: 1px solid var(--border); color: var(--text-light); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            📱 <span data-en="Tablet" data-ar="تابلت">Tablet</span>
+                        </button>
+                        <button onclick="resizePreview('375px', '667px')" style="background: var(--card-bg); border: 1px solid var(--border); color: var(--text-light); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            📱 <span data-en="Mobile" data-ar="موبايل">Mobile</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="AI Chatbot" data-ar="روبوت ذكي">AI Chatbot</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;" data-en="Interactive assistant" data-ar="مساعد تفاعلي">Interactive assistant</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌍</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Multi-Language" data-ar="متعدد اللغات">Multi-Language</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;" data-en="AR/EN support" data-ar="دعم عربي/إنجليزي">AR/EN support</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Modern Design" data-ar="تصميم حديث">Modern Design</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;" data-en="Dark theme UI" data-ar="واجهة داكنة">Dark theme UI</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📱</div>
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Responsive" data-ar="متجاوب">Responsive</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;" data-en="All devices" data-ar="جميع الأجهزة">All devices</p>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 1.1rem;" data-en="Ready to get your own AI-powered portfolio?" data-ar="جاهز للحصول على بورتفوليو ذكي خاص بك؟">
+                    Ready to get your own AI-powered portfolio?
+                </p>
+                <a href="#contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;" data-en="🚀 Get Started Now" data-ar="🚀 ابدأ الآن">🚀 Get Started Now</a>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div style="margin-top: 4rem; max-width: 1400px; margin-left: auto; margin-right: auto;">
+            <h3 class="section-title" style="font-size: 2rem;" data-en="Frequently Asked Questions" data-ar="الأسئلة الشائعة">Frequently Asked Questions</h3>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="How long does it take?" data-ar="كم يستغرق من الوقت؟">How long does it take?</h4>
+                    <p style="color: var(--text-dim);" data-en="Typically 2-4 weeks depending on the complexity. Basic plan takes about 2 weeks, Professional plan takes 3-4 weeks for the best quality." data-ar="عادةً 2-4 أسابيع حسب التعقيد. الباقة الأساسية تستغرق حوالي أسبوعين، الباقة المحترفة تستغرق 3-4 أسابيع لأفضل جودة.">Typically 2-4 weeks depending on the complexity. Basic plan takes about 2 weeks, Professional plan takes 3-4 weeks for the best quality.</p>
+                </div>
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="What do I need to provide?" data-ar="ماذا أحتاج أن أقدم؟">What do I need to provide?</h4>
+                    <p style="color: var(--text-dim);" data-en="Your CV/resume, project details, photos, and any specific requirements. I'll guide you through the process." data-ar="سيرتك الذاتية، تفاصيل المشاريع، الصور، وأي متطلبات خاصة. سأرشدك خلال العملية.">Your CV/resume, project details, photos, and any specific requirements. I'll guide you through the process.</p>
+                </div>
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Can I update it later?" data-ar="هل يمكنني تحديثه لاحقاً؟">Can I update it later?</h4>
+                    <p style="color: var(--text-dim);" data-en="Yes! I provide 30 days of support for updates. Professional plan includes 45 days of priority support with faster response times." data-ar="نعم! أقدم 30 يوم دعم للتحديثات. الباقة المحترفة تشمل 45 يوم دعم أولوية مع أوقات استجابة أسرع.">Yes! I provide 30 days of support for updates. Professional plan includes 45 days of priority support with faster response times.</p>
+                </div>
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="Do I need hosting?" data-ar="هل أحتاج استضافة؟">Do I need hosting?</h4>
+                    <p style="color: var(--text-dim);" data-en="I'll provide guidance for free hosting options (GitHub Pages, Netlify) or help with your own hosting setup." data-ar="سأقدم إرشادات لخيارات الاستضافة المجانية أو المساعدة في إعداد الاستضافة الخاصة بك.">I'll provide guidance for free hosting options (GitHub Pages, Netlify) or help with your own hosting setup.</p>
+                </div>
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;" data-en="How does the AI chatbot work?" data-ar="كيف يعمل روبوت المحادثة الذكي؟">How does the AI chatbot work?</h4>
+                    <p style="color: var(--text-dim);" data-en="The AI is trained on your personal information and can answer questions about your experience, projects, and expertise 24/7. It uses advanced NLP and can handle multiple languages." data-ar="الذكاء الاصطناعي مدرب على معلوماتك الشخصية ويمكنه الإجابة عن الأسئلة حول خبرتك ومشاريعك على مدار الساعة. يستخدم معالجة لغة طبيعية متقدمة ويدعم عدة لغات.">The AI is trained on your personal information and can answer questions about your experience, projects, and expertise 24/7. It uses advanced NLP and can handle multiple languages.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title" data-en="About Me" data-ar="نبذة عني">About Me</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3 data-en="🎓 Education" data-ar="🎓 التعليم">🎓 Education</h3>
+                <p data-en="BSc in Mechatronics Engineering from Al-Azhar University-Gaza (2011-2017)" data-ar="بكالوريوس هندسة الميكاترونكس من جامعة الأزهر-غزة (2011-2017)">
+                    BSc in Mechatronics Engineering from Al-Azhar University-Gaza (2011-2017)
+                </p>
+            </div>
+            <div class="card">
+                <h3 data-en="🌍 Location" data-ar="🌍 الموقع">🌍 Location</h3>
+                <p data-en="Abu Dhabi, United Arab Emirates" data-ar="أبوظبي، الإمارات العربية المتحدة">Abu Dhabi, United Arab Emirates</p>
+                <p data-en="Palestinian Nationality" data-ar="الجنسية الفلسطينية">Palestinian Nationality</p>
+            </div>
+            <div class="card">
+                <h3 data-en="💡 Interests" data-ar="💡 الاهتمامات">💡 Interests</h3>
+                <ul>
+                    <li data-en="Robotics & Automation" data-ar="الروبوتات والأتمتة">Robotics & Automation</li>
+                    <li data-en="3D Design" data-ar="التصميم ثلاثي الأبعاد">3D Design</li>
+                    <li data-en="Kung Fu" data-ar="كونغ فو">Kung Fu</li>
+                    <li data-en="Drawing" data-ar="الرسم">Drawing</li>
+                    <li data-en="Web Development" data-ar="تطوير الويب">Web Development</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2 class="section-title" data-en="Work Experience" data-ar="الخبرة العملية">Work Experience</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3 data-en="Mechatronics Engineer" data-ar="مهندس ميكاترونكس">Mechatronics Engineer</h3>
+                <div class="period" data-en="June 2021 - Present" data-ar="يونيو 2021 - حتى الآن">June 2021 - Present</div>
+                <div class="location" data-en="Tatweer Middle East and Africa | Ministry of Interior - UAE" data-ar="تطوير الشرق الأوسط وأفريقيا | وزارة الداخلية - الإمارات">Tatweer Middle East and Africa | Ministry of Interior - UAE</div>
+                <ul>
+                    <li data-en="Develop innovative solutions for Ministry challenges" data-ar="تطوير حلول مبتكرة لتحديات الوزارة">Develop innovative solutions for Ministry challenges</li>
+                    <li data-en="Python development for custom software" data-ar="تطوير برامج مخصصة بلغة بايثون">Python development for custom software</li>
+                    <li data-en="Embedded systems development" data-ar="تطوير الأنظمة المدمجة">Embedded systems development</li>
+                    <li data-en="Training courses and workshops" data-ar="دورات تدريبية وورش عمل">Training courses and workshops</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 data-en="Research Assistant" data-ar="مساعد باحث">Research Assistant</h3>
+                <div class="period" data-en="May 2019 - May 2021" data-ar="مايو 2019 - مايو 2021">May 2019 - May 2021</div>
+                <div class="location" data-en="United Arab Emirates University" data-ar="جامعة الإمارات العربية المتحدة">United Arab Emirates University</div>
+                <ul>
+                    <li data-en="Built Bu Saif Humanoid Robot" data-ar="بناء روبوت بو سيف البشري">Built Bu Saif Humanoid Robot</li>
+                    <li data-en="COVID-19 ventilator prototypes" data-ar="نماذج أجهزة التنفس الصناعي لكوفيد-19">COVID-19 ventilator prototypes</li>
+                    <li data-en="Meta Touch project development" data-ar="تطوير مشروع ميتا تاتش">Meta Touch project development</li>
+                    <li data-en="Patent US11573635 contribution" data-ar="المساهمة في براءة الاختراع الأمريكية 11573635">Patent US11573635 contribution</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title" data-en="Featured Projects" data-ar="المشاريع المميزة">Featured Projects</h2>
+        
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="project-card">
+            <div class="project-header">
+                <h3 class="project-title" data-en="Bu Saif Humanoid Robot (2020-2021)" data-ar="روبوت بو سيف البشري (2020-2021)">Bu Saif Humanoid Robot (2020-2021)</h3>
+                <span class="project-status" data-en="✅ Completed" data-ar="✅ مكتمل">✅ Completed</span>
+            </div>
+            <p data-en="Python program for mini-mental state examination (MMSE) with automatic answer evaluation. Collaboration with UAE University & Dubai Health Authority for elderly treatment." data-ar="برنامج بايثون لفحص الحالة العقلية المصغرة مع تقييم تلقائي للإجابات. بالتعاون مع جامعة الإمارات وهيئة الصحة بدبي لعلاج كبار السن.">
+                Python program for mini-mental state examination (MMSE) with automatic answer evaluation. Collaboration with UAE University & Dubai Health Authority for elderly treatment.
+            </p>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <h3 class="project-title" data-en="Bu Saif Robot - GITEX 2019" data-ar="روبوت بو سيف - جيتكس 2019">Bu Saif Robot - GITEX 2019</h3>
+                <span class="project-status" data-en="✅ Exhibited" data-ar="✅ معروض">✅ Exhibited</span>
+            </div>
+            <p data-en="Built humanoid robot from scratch with Python-based NLP, Arabic text understanding, silicon head with actuators. Presented at GITEX 2019 Exhibition in Dubai." data-ar="بناء روبوت بشري من الصفر مع معالجة لغة طبيعية بايثون، فهم النصوص العربية، رأس سيليكون مع محركات. عُرض في معرض جيتكس 2019 بدبي.">
+                Built humanoid robot from scratch with Python-based NLP, Arabic text understanding, silicon head with actuators. Presented at GITEX 2019 Exhibition in Dubai.
+            </p>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <h3 class="project-title" data-en="US Patent 11573635" data-ar="براءة اختراع أمريكية 11573635">US Patent 11573635</h3>
+                <span class="project-status" data-en="✅ Granted" data-ar="✅ ممنوحة">✅ Granted</span>
+            </div>
+            <p data-en="Face mask for accurate location of sensors relative to a user's face with EMG sensors for communication purposes." data-ar="قناع وجه لتحديد موقع دقيق للمستشعرات بالنسبة لوجه المستخدم مع مستشعرات EMG لأغراض التواصل.">
+                Face mask for accurate location of sensors relative to a user's face with EMG sensors for communication purposes.
+            </p>
+        </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title" data-en="Technical Skills" data-ar="المهارات التقنية">Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3 data-en="3D Design & CAD" data-ar="التصميم ثلاثي الأبعاد">3D Design & CAD</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="SolidWorks" data-ar="سوليدووركس">SolidWorks</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="Fusion 360" data-ar="فيوجن 360">Fusion 360</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="AutoCAD" data-ar="أوتوكاد">AutoCAD</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 data-en="Programming" data-ar="البرمجة">Programming</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Python</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="ROS" data-ar="نظام تشغيل الروبوتات">ROS</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="Embedded Systems" data-ar="الأنظمة المدمجة">Embedded Systems</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 data-en="Robotics & Electronics" data-ar="الروبوتات والإلكترونيات">Robotics & Electronics</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="Robotics" data-ar="الروبوتات">Robotics</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="Electronics Hardware" data-ar="الأجهزة الإلكترونية">Electronics Hardware</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 data-en="Manufacturing" data-ar="التصنيع">Manufacturing</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="CNC Machines" data-ar="آلات CNC">CNC Machines</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span data-en="3D Printing" data-ar="الطباعة ثلاثية الأبعاد">3D Printing</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 95%"></div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title" data-en="Get In Touch" data-ar="تواصل معي">Get In Touch</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <h3 data-en="Email" data-ar="البريد الإلكتروني">Email</h3>
+                <a href="mailto:b_aljazzar@yahoo.com">b_aljazzar@yahoo.com</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📱</div>
+                <h3 data-en="Phone" data-ar="الهاتف">Phone</h3>
+                <a href="tel:+971566113381">+971 56 611 3381</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <h3 data-en="Location" data-ar="الموقع">Location</h3>
+                <p data-en="Abu Dhabi, UAE" data-ar="أبوظبي، الإمارات">Abu Dhabi, UAE</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">💼</div>
+                <h3>LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/bassam-aljazzar" target="_blank" data-en="View Profile" data-ar="عرض الملف الشخصي">View Profile</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <button class="chatbot-button" onclick="toggleChatbot()">🤖</button>
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <h3 data-en="AI Assistant" data-ar="المساعد الذكي">AI Assistant</h3>
+            <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="chat-message ai" data-en="Hello! I'm Bassam's AI assistant. Ask me anything about his experience, projects, mechatronics engineering, AI portfolio design service, 3D manufacturing, innovation consulting, or try our free AI Playground!" data-ar="مرحباً! أنا المساعد الذكي لبسام. اسألني عن خبرته، مشاريعه، هندسة الميكاترونكس، خدمة تصميم البورتفوليو، التصنيع ثلاثي الأبعاد، استشارات الابتكار، أو جرب ملعب الذكاء الاصطناعي المجاني!">
+                Hello! I'm Bassam's AI assistant. Ask me anything about his experience, projects, mechatronics engineering, AI portfolio design service, 3D manufacturing, innovation consulting, or try our free AI Playground!
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Type your message..." data-placeholder-en="Type your message..." data-placeholder-ar="اكتب رسالتك...">
+            <button onclick="sendMessage()" data-en="Send" data-ar="إرسال">Send</button>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div style="max-width: 1400px; margin: 0 auto; padding: 3rem 2rem 2rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;" data-en="Bassam Aljazzar" data-ar="بسام الجزار">Bassam Aljazzar</h3>
+                    <p style="color: var(--text-dim); line-height: 1.8;" data-en="Mechatronics Engineer specialized in robotics, automation, and AI-powered portfolio design." data-ar="مهندس ميكاترونكس متخصص في الروبوتات والأتمتة وتصميم البورتفوليو بالذكاء الاصطناعي.">
+                        Mechatronics Engineer specialized in robotics, automation, and AI-powered portfolio design.
+                    </p>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;" data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="#services" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'" data-en="Services" data-ar="الخدمات">Services</a>
+                        <a href="#projects" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'" data-en="Projects" data-ar="المشاريع">Projects</a>
+                        <a href="#contact" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'" data-en="Contact" data-ar="تواصل">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;" data-en="Services" data-ar="الخدمات">Services</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <span style="color: var(--text-dim);" data-en="AI Portfolio Design" data-ar="تصميم بورتفوليو ذكي">AI Portfolio Design</span>
+                        <span style="color: var(--text-dim);" data-en="3D Design & Manufacturing" data-ar="التصميم والتصنيع ثلاثي الأبعاد">3D Design & Manufacturing</span>
+                        <span style="color: var(--text-dim);" data-en="Laser Cutting & Engraving" data-ar="القطع والحفر بالليزر">Laser Cutting & Engraving</span>
+                        <span style="color: var(--text-dim);" data-en="3D Printing Services" data-ar="خدمات الطباعة ثلاثية الأبعاد">3D Printing Services</span>
+                        <span style="color: var(--text-dim);" data-en="Innovation Consulting" data-ar="استشارات الابتكار">Innovation Consulting</span>
+                        <span style="color: var(--text-dim);" data-en="Mechatronics Consulting" data-ar="استشارات ميكاترونكس">Mechatronics Consulting</span>
+                        <span style="color: var(--text-dim);" data-en="Robotics Development" data-ar="تطوير روبوتات">Robotics Development</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;" data-en="Connect" data-ar="تواصل">Connect</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="mailto:b_aljazzar@yahoo.com" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">b_aljazzar@yahoo.com</a>
+                        <a href="tel:+971566113381" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">+971 56 611 3381</a>
+                        <a href="https://www.linkedin.com/in/bassam-aljazzar" target="_blank" style="color: var(--text-dim); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dim)'">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center;">
+                <p data-en="© 2024 Bassam Aljazzar. All rights reserved." data-ar="© 2024 بسام الجزار. جميع الحقوق محفوظة.">© 2024 Bassam Aljazzar. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;" data-en="Mechatronics Engineer | AI Portfolio Designer | UAE" data-ar="مهندس ميكاترونكس | مصمم بورتفوليو ذكي | الإمارات">Mechatronics Engineer | AI Portfolio Designer | UAE</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        const terminalOutput = document.getElementById('terminalOutput');
-        const commandInput = document.getElementById('commandInput');
-        const currentDirElement = document.getElementById('currentDir');
-        let commandHistory = [];
-        let historyIndex = -1;
-        let currentDir = '~';
-        let chatMode = false;
+        let currentLang = 'en';
         let chatHistory = [];
+        let lastRequestTime = 0;
+        const MIN_REQUEST_INTERVAL = 5500;
         
         // Google Sheets Analytics Configuration
         const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxWblq8swF_Q8YgyMNOufr1S4hcM5pkJY5qNKfJjDRNAxbeVFaoF79hFjroxHZdLV_KMg/exec';
-        
-        // Generate unique session ID
         const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         
-        // Detect user info
         let userCountry = 'Unknown';
         let userDevice = /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
         let userBrowser = navigator.userAgent.includes('Chrome') ? 'Chrome' : 
@@ -647,14 +1345,11 @@
 
         async function logVisitor() {
             if (!GOOGLE_SHEET_URL) return;
-            
             try {
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'visitor',
                         country: userCountry,
@@ -670,14 +1365,11 @@
 
         async function logChatMessage(userMsg, aiMsg) {
             if (!GOOGLE_SHEET_URL) return;
-            
             try {
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'chat',
                         userMessage: userMsg,
@@ -691,1052 +1383,585 @@
             }
         }
 
-        // File system (same as before)
-        const fileSystem = {
-            '~': {
-                type: 'dir',
-                contents: {
-                    'about.txt': { 
-                        type: 'file', 
-                        content: `Name: Bassam Walid Aljazzar
-Role: Mechatronics Engineer / Electromechanical Engineer / Robotics Engineer
-Location: Abu Dhabi, United Arab Emirates
-Nationality: Palestinian
-
-Bio:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-As a Mechatronics Engineer with 8 years of experience, I am an expert in 
-3D design, complex system analysis and modifications, and Python development. 
-I have a solid educational background and research experience as a research 
-assistant at UAE University. 
-
-I have built a Humanoid robot named "Bu Saif" and contributed to a patent 
-(US11573635) for a face mask with EMG sensors for communication. 
-
-I possess excellent communication and leadership skills and have a passion 
-for robotics and automation. I am confident that I can bring innovation, 
-quality, and creativity to any organization.
-
-Interests:
-  • Drawing
-  • 3D Designing
-  • Kung Fu
-  • Robotics
-
-Languages:
-  • Arabic (Native)
-  • English (Advanced)` 
-                    },
-                    'skills.txt': { 
-                        type: 'file', 
-                        content: `Technical Skills
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-3D Design & CAD:
-  • SolidWorks 3D Design       ⭐⭐⭐⭐⭐ Expert
-  • Fusion 360 3D Design       ⭐⭐⭐⭐⭐ Expert
-  • Autodesk AutoCAD           ⭐⭐⭐⭐⭐ Expert
-
-Programming & Software:
-  • Python Programming         ⭐⭐⭐⭐ Experienced
-  • ROS (Robot Operating Sys)  ⭐⭐⭐⭐ Skillful
-  • Embedded Systems           ⭐⭐⭐⭐⭐ Expert
-  • Microsoft Office           ⭐⭐⭐⭐⭐ Expert
-
-Robotics & Electronics:
-  • Robotics                   ⭐⭐⭐⭐ Experienced
-  • Electronics Hardware       ⭐⭐⭐⭐⭐ Expert
-  • Proteus                    ⭐⭐⭐⭐⭐ Expert
-
-Manufacturing & Machines:
-  • CNC Machines               ⭐⭐⭐⭐ Experienced
-  • Laser Cutting Machines     ⭐⭐⭐⭐⭐ Expert
-  • 3D Printing Machine        ⭐⭐⭐⭐⭐ Expert
-
-Specializations:
-  ✓ Mechatronics Systems Design
-  ✓ Complex System Analysis & Modifications
-  ✓ 3D Design & Prototyping
-  ✓ Robotics & Automation
-  ✓ Embedded Systems Development
-  ✓ Python Development
-  ✓ PLC Programming
-  ✓ Solar Energy Systems` 
-                    },
-                    'contact.txt': { 
-                        type: 'file', 
-                        content: `Contact Information
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📧 Email:    b_aljazzar@yahoo.com
-📱 Phone:    +971 56 611 3381
-📍 Location: Abu Dhabi, United Arab Emirates
-💼 LinkedIn: https://www.linkedin.com/in/bassam-aljazzar
-
-Availability:
-  • Open for full-time opportunities
-  • Available for consulting projects
-  • Open to collaboration on robotics projects
-
-Response Time:
-  • Usually within 24 hours
-  • For urgent matters, please call
-
-Feel free to reach out for:
-  ✓ Job opportunities
-  ✓ Robotics & Mechatronics consulting
-  ✓ Research collaboration
-  ✓ Technical workshops & training
-  ✓ Speaking engagements` 
-                    },
-                    'education.txt': { 
-                        type: 'file', 
-                        content: `Education Background
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🎓 Bachelor of Science in Mechatronics Engineering
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-University: Al-Azhar University-Gaza
-Location: Gaza, Palestine
-Duration: October 2011 - May 2017
-Degree: BSc in Mechatronics Engineering
-
-About Mechatronics Engineering:
-Mechatronics engineering is a multidisciplinary field that combines 
-principles of mechanical, electrical, and computer engineering to 
-create complex systems that are efficient, reliable, and versatile.
-
-Graduation Project: "Shrimp Rover Robot"
-The graduation project explained the meaning of Mechatronics, as it 
-was a robot combining Mechanics, Electronics, and Control.` 
-                    },
-                    'projects': {
-                        type: 'dir',
-                        contents: {
-                            'README.md': { 
-                                type: 'file', 
-                                content: `My Projects & Achievements
-═══════════════════════════════════════════════════════════════════
-
-Use 'ls' to see all projects, then 'cat <filename>' to read details.
-
-Featured Projects:
-  • busaif-2020.md    - Bu Saif Humanoid Robot (Latest)
-  • busaif-2019.md    - Bu Saif Robot (GITEX 2019)
-  • meta-touch.md     - Meta Touch Elevator Project
-  • shrimp-rover.md   - Shrimp Rover Robot
-  • patent.md         - US Patent 11573635` 
-                            },
-                            'busaif-2020.md': { 
-                                type: 'file', 
-                                content: `Bu Saif Humanoid Robot 2020-2021
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-I built a Python program for Bu Saif to perform a mini-mental state 
-examination (MMSE). The program includes questions that the robot 
-asks patients and automatically evaluates answers.
-
-Features:
-  ✓ Works to read attention and interaction
-  ✓ Calculates response time automatically
-  ✓ Provides real-time feedback
-
-Collaboration: UAE University & Dubai Health Authority
-Focus: Treatment of elderly with cognitive functions
-
-Status: ✅ Completed & Deployed` 
-                            },
-                            'busaif-2019.md': { 
-                                type: 'file', 
-                                content: `Bu Saif Humanoid Robot 2019
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Built Humanoid Intelligent Robot "Bu Saif" from scratch, presented 
-at GITEX 2019 Exhibition in Dubai.
-
-Features:
-  • Python-based NLP
-  • Understands Arabic human text
-  • Can respond naturally
-  • Silicon head with actuators
-  • Body with arms
-
-Exhibition: GITEX 2019, Dubai, UAE
-Status: ✅ Successfully Exhibited` 
-                            },
-                            'meta-touch.md': { 
-                                type: 'file', 
-                                content: `Meta Touch Project 2020
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Developed touchless elevator button system to avoid COVID-19 spread.
-
-Features:
-  ✓ No physical contact required
-  ✓ Compatible with existing elevators
-  ✓ Fast response time
-
-Impact: Helped reduce virus transmission
-Status: ✅ Production & Commercial` 
-                            },
-                            'shrimp-rover.md': { 
-                                type: 'file', 
-                                content: `Shrimp Rover Robot 2016
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Graduation project - specialized robot with six wheels designed to 
-overcome obstacles, inspired by shrimp movement.
-
-Features:
-  ✓ Six-wheeled configuration
-  ✓ Independent motor control
-  ✓ All-terrain capability
-
-Status: ✅ Completed (Graduation Project)` 
-                            },
-                            'patent.md': { 
-                                type: 'file', 
-                                content: `United States Patent 11573635
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Title: Face mask for accurate location of sensors relative to a 
-user's face, a communication enabling face mask, and a communication 
-system including the face mask.
-
-Patent Number: US11573635
-
-Contributed to developing innovative face mask equipped with EMG 
-sensors for communication purposes.
-
-Link: https://patentimages.storage.googleapis.com/73/15/54/9ddd67aef63072/US11573635.pdf
-
-Status: ✅ Patent Granted` 
+        // 🎬 Spline Control Function
+        function triggerPatentView() {
+            try {
+                const splineViewer = document.querySelector('spline-viewer');
+                
+                if (!splineViewer) {
+                    console.warn('⚠️ Spline viewer not found');
+                    return { success: false, message: 'Spline viewer not available' };
+                }
+                
+                console.log('🎬 Triggering patent view in 3D lab...');
+                
+                try {
+                    if (typeof splineViewer.emitEvent === 'function') {
+                        splineViewer.emitEvent('mouseDown', 'RedMask');
+                    }
+                    
+                    const tryRuntime = () => {
+                        if (splineViewer.runtime) {
+                            const mask = splineViewer.runtime.findObjectByName('RedMask') || 
+                                       splineViewer.runtime.findObjectByName('patent_mask');
+                            if (mask) {
+                                splineViewer.runtime.emitEvent('mouseDown', mask);
                             }
                         }
-                    },
-                    'experience': {
-                        type: 'dir',
-                        contents: {
-                            'README.md': { 
-                                type: 'file', 
-                                content: `Work Experience
-═══════════════════════════════════════════════════════════════════
-
-Positions:
-  • current-job.txt   - Mechatronics Engineer (2021-Present)
-  • research.txt      - Research Assistant (2019-2021)
-  • fadel-trading.txt - Mechatronics Engineer (2018-2019)
-  • flash-tech.txt    - Mechatronics Engineer (2017)` 
-                            },
-                            'current-job.txt': { 
-                                type: 'file', 
-                                content: `Mechatronics Engineer
-Tatweer Middle East and Africa
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 June 2021 - Present
-📍 Abu Dhabi, UAE
-🏢 Ministry of Interior - Manufacturing Innovation Laboratory
-
-Responsibilities:
-  ✓ Develop innovative solutions for Ministry challenges
-  ✓ Python development for custom software
-  ✓ Embedded systems development
-  ✓ Training courses and workshops
-  ✓ Technical consulting
-
-Status: 🟢 Current Position` 
-                            },
-                            'research.txt': { 
-                                type: 'file', 
-                                content: `Research Assistant
-United Arab Emirates University
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 May 2019 - May 2021
-📍 Al Ain, UAE
-
-Key Projects:
-  • Bu Saif Humanoid Robot
-  • COVID-19 ventilator prototypes
-  • Meta Touch project
-  • Patent US11573635
-
-Status: ✅ Completed` 
-                            },
-                            'fadel-trading.txt': { 
-                                type: 'file', 
-                                content: `Mechatronics Engineer
-Fadel Al Dhaheri General Trading
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 November 2018 - April 2019
-📍 Dubai, UAE
-
-Responsibilities:
-  • Massage chairs maintenance
-  • Toy machines maintenance
-  • Motherboards maintenance
-
-Status: ✅ Completed` 
-                            },
-                            'flash-tech.txt': { 
-                                type: 'file', 
-                                content: `Mechatronics Engineer
-Flash Tech Company
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 June 2017 - November 2017
-📍 Gaza, Palestine
-
-Responsibilities:
-  • Solar energy systems installation
-  • PLC programming
-  • Electrical systems maintenance
-
-Status: ✅ Completed` 
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        // Commands (same as before)
-        const commands = {
-            help: () => `Available Commands
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-File System:
-  ls              - List directory contents
-  cd <dir>        - Change directory
-  pwd             - Print working directory
-  cat <file>      - Display file contents
-  tree            - Display directory tree
-  cd ..           - Go to parent directory
-
-Quick Info:
-  about           - About Bassam Aljazzar
-  skills          - Technical skills
-  projects        - Projects overview
-  experience      - Work experience
-  education       - Educational background
-  contact         - Contact information
-AI Assistant:
-  chatbot         - Chat with AI assistant
-  portfolio       - Build your AI-powered portfolio
-
-Bassam & Mechatronics
-
-System:
-  clear           - Clear terminal
-  history         - Show command history
-  help            - Show this help
-  whoami          - Display current user
-  date            - Display current date`,
-
-            ls: (args) => {
-                const path = args[0] || currentDir;
-                const dir = getDirectory(path);
-                
-                if (!dir || dir.type !== 'dir') {
-                    return `ls: cannot access '${path}': No such file or directory`;
-                }
-                
-                const items = Object.keys(dir.contents);
-                return items.map(item => {
-                    const isDir = dir.contents[item].type === 'dir';
-                    const color = isDir ? '#5BCEFA' : '#00ff00';
-                    const suffix = isDir ? '/' : '';
-                    return `<span style="color: ${color}; font-weight: ${isDir ? 'bold' : 'normal'}">${item}${suffix}</span>`;
-                }).join('  ');
-            },
-
-            cd: (args) => {
-                if (!args[0] || args[0] === '~') {
-                    currentDir = '~';
-                    currentDirElement.textContent = '~';
-                    // Show welcome message when returning to home
-                    setTimeout(() => {
-                        addOutput(`<pre style="color: #00ff00; line-height: 1.2; font-size: 0.75em;">
- ██████╗  █████╗ ███████╗███████╗ █████╗ ███╗   ███╗     █████╗ ██╗         ██╗ █████╗ ███████╗███████╗ █████╗ ██████╗ 
- ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗████╗ ████║    ██╔══██╗██║         ██║██╔══██╗╚══███╔╝╚══███╔╝██╔══██╗██╔══██╗
- ██████╔╝███████║███████╗███████╗███████║██╔████╔██║    ███████║██║         ██║███████║  ███╔╝   ███╔╝ ███████║██████╔╝
- ██╔══██╗██╔══██║╚════██║╚════██║██╔══██║██║╚██╔╝██║    ██╔══██║██║    ██   ██║██╔══██║ ███╔╝   ███╔╝  ██╔══██║██╔══██╗
- ██████╔╝██║  ██║███████║███████║██║  ██║██║ ╚═╝ ██║    ██║  ██║███████╗╚█████╔╝██║  ██║███████╗███████╗██║  ██║██║  ██║
- ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝  ╚═╝╚══════╝ ╚════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-</pre>`);
-                        addOutput(`<span style="color: #5BCEFA; font-weight: bold;">Welcome to Bassam Aljazzar's Interactive Portfolio Terminal</span>
-
-<span style="color: #F5A9B8;">Mechatronics Engineer | Robotics Specialist | Innovation Consultant</span>
-<span style="color: #00ff00;">📍 Abu Dhabi, UAE | 8 Years Experience | Patent Holder (US11573635)</span>
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-                    }, 100);
-                    return '';
-                }
-                
-                const newDir = args[0];
-                if (newDir === '..') {
-                    if (currentDir !== '~') {
-                        const parts = currentDir.split('/').filter(p => p !== '~');
-                        parts.pop();
-                        currentDir = parts.length > 0 ? `~/${parts.join('/')}` : '~';
-                        currentDirElement.textContent = currentDir;
-                    }
-                    return '';
-                }
-                
-                const targetPath = currentDir === '~' ? `~/${newDir}` : `${currentDir}/${newDir}`;
-                const dir = getDirectory(targetPath);
-                
-                if (!dir) {
-                    return `cd: ${newDir}: No such file or directory`;
-                }
-                
-                if (dir.type !== 'dir') {
-                    return `cd: ${newDir}: Not a directory`;
-                }
-                
-                currentDir = targetPath;
-                currentDirElement.textContent = currentDir;
-                return '';
-            },
-
-            pwd: () => currentDir.replace('~', '/home/bassam'),
-
-            cat: (args) => {
-                if (!args[0]) {
-                    return 'cat: missing file operand';
-                }
-                
-                const file = getFile(args[0]);
-                
-                if (!file) {
-                    return `cat: ${args[0]}: No such file or directory`;
-                }
-                
-                if (file.type === 'dir') {
-                    return `cat: ${args[0]}: Is a directory`;
-                }
-                
-                return file.content;
-            },
-
-            tree: () => {
-                const buildTree = (obj, prefix = '', isLast = true) => {
-                    const keys = Object.keys(obj.contents || {});
-                    let result = '';
+                    };
                     
-                    keys.forEach((key, index) => {
-                        const isLastItem = index === keys.length - 1;
-                        const item = obj.contents[key];
-                        const connector = isLastItem ? '└── ' : '├── ';
-                        const isDir = item.type === 'dir';
-                        const color = isDir ? '#5BCEFA' : '#00ff00';
-                        
-                        result += `${prefix}${connector}<span style="color: ${color}; font-weight: ${isDir ? 'bold' : 'normal'}">${key}${isDir ? '/' : ''}</span>\n`;
-                        
-                        if (isDir && item.contents) {
-                            const newPrefix = prefix + (isLastItem ? '    ' : '│   ');
-                            result += buildTree(item, newPrefix, isLastItem);
-                        }
-                    });
+                    tryRuntime();
+                    setTimeout(tryRuntime, 100);
                     
-                    return result;
+                } catch (e) {
+                    console.log('Spline interaction attempt:', e.message);
+                }
+                
+                addChatMessage(
+                    currentLang === 'ar' 
+                        ? '🎭 انظر للمختبر الافتراضي أعلاه! تم تفعيل عرض البراءة.' 
+                        : '🎭 Look at the virtual lab above! Patent view activated.',
+                    'ai'
+                );
+                
+                return { 
+                    success: true, 
+                    message: 'Patent view activated in 3D lab. User can click the red mask above to view the patent document.' 
                 };
                 
-                const dir = getDirectory(currentDir);
-                return `<span style="color: #5BCEFA; font-weight: bold">${currentDir}/</span>\n` + buildTree(dir);
-            },
-
-            clear: () => {
-                terminalOutput.innerHTML = '';
-                return null;
-            },
-
-            whoami: () => 'bassam',
-
-            date: () => new Date().toString(),
-
-            echo: (args) => args.join(' '),
-
-            history: () => commandHistory.map((cmd, i) => `  ${i + 1}  ${cmd}`).join('\n'),
-
-            about: () => commands.cat(['about.txt']),
-            skills: () => commands.cat(['skills.txt']),
-            contact: () => commands.cat(['contact.txt']),
-            education: () => commands.cat(['education.txt']),
-            projects: () => 'Navigate: cd projects && ls && cat <project-file>',
-            experience: () => 'Navigate: cd experience && ls && cat <position-file>',
-
-            sudo: (args) => {
-                const fullCmd = args.join(' ');
-                if (fullCmd === 'rm -rf /') {
-                    return '😱 Nice try! But I\'m not deleting my portfolio!';
-                }
-                return '[sudo] password for bassam: \nSorry, no sudo access here 😄';
-            },
-
-            portfolio: () => {
-                window.location.href = 'auth.html';
-                return '🚀 Redirecting to AI Portfolio Builder...';
-            },
-
-            chatbot: () => {
-                chatMode = true;
-                chatHistory = [];
-                currentDirElement.textContent = '🤖 AI Chat';
-                return `<span style="color: #5BCEFA; font-weight: bold;">🤖 AI Chatbot Activated!</span>
-
-<span style="color: #00ff00;">I'm Bassam's AI assistant. I can help you with:</span>
-  • Information about Bassam's background and experience
-  • Details about his mechatronics projects
-  • Explanations about mechatronics engineering
-  • Questions about robotics and automation
-
-<span style="color: #F5A9B8;">Type your question and press Enter to chat.</span>
-<span style="color: #888;">Type 'exit' to return to terminal mode.</span>
-
-<span style="color: #666; font-size: 0.9em;">📝 Note: Conversations are logged for quality improvement.</span>
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+            } catch (error) {
+                console.error('❌ Spline control error:', error);
+                return { success: false, message: error.message };
             }
-        };
-
-
-// AI chat with Function Calling for Spline control
-let lastRequestTime = 0;
-const MIN_REQUEST_INTERVAL = 5500;
-
-// 🎬 Spline Control Function
-function triggerPatentView() {
-  try {
-    const splineViewer = document.querySelector('spline-viewer');
-    
-    if (!splineViewer) {
-      console.warn('⚠️ Spline viewer not found');
-      return { success: false, message: 'Spline viewer not available' };
-    }
-    
-    console.log('🎬 Triggering patent view in 3D lab...');
-    
-    // جرّب الطرق المختلفة للتفاعل مع Spline
-    try {
-      // Method 1: Direct event emission
-      if (typeof splineViewer.emitEvent === 'function') {
-        splineViewer.emitEvent('mouseDown', 'RedMask');
-      }
-      
-      // Method 2: Access through runtime (يشتغل بعد ما يحمّل)
-      const tryRuntime = () => {
-        if (splineViewer.runtime) {
-          const mask = splineViewer.runtime.findObjectByName('RedMask') || 
-                       splineViewer.runtime.findObjectByName('patent_mask');
-          if (mask) {
-            splineViewer.runtime.emitEvent('mouseDown', mask);
-          }
         }
-      };
-      
-      // جرّب فوراً وبعد delay
-      tryRuntime();
-      setTimeout(tryRuntime, 100);
-      
-    } catch (e) {
-      console.log('Spline interaction attempt:', e.message);
-    }
-    
-    // Visual feedback في الـ terminal
-    addOutput(`<span style="color:#5BCEFA;">🎭 ← انظر للمختبر الافتراضي أعلاه! تم تفعيل عرض البراءة.</span>`);
-    
-    return { 
-      success: true, 
-      message: 'Patent view activated in 3D lab. User can click the red mask above the mannequin to view the patent document.' 
-    };
-    
-  } catch (error) {
-    console.error('❌ Spline control error:', error);
-    return { success: false, message: error.message };
-  }
-}
 
-async function sendChatMessage(userMessage) {
-  console.log('🚀 Starting chat request...');
-  
-  if (window.__aiBusy) {
-    return `<span style="color:#ffbd2e;">⏳ انتظر قليلاً...</span>`;
-  }
+        // Language Toggle
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (el.tagName === 'INPUT') {
+                    el.placeholder = el.getAttribute(`data-placeholder-${currentLang}`);
+                } else {
+                    el.textContent = el.getAttribute(`data-${currentLang}`);
+                }
+            });
+            
+            document.getElementById('langSwitch').textContent = currentLang === 'en' ? 'العربية' : 'English';
+        }
 
-  const now = Date.now();
-  const timeSinceLastRequest = now - lastRequestTime;
-  console.log(`⏱️ Time since last request: ${timeSinceLastRequest}ms`);
-  
-  if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
-    const waitTime = Math.ceil((MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000);
-    console.log(`⚠️ Rate limit triggered. Wait ${waitTime}s`);
-    return `<span style="color:#ffa500;">⏱️ انتظر ${waitTime} ثانية قبل الرسالة التالية</span>`;
-  }
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
 
-  window.__aiBusy = true;
-  lastRequestTime = now;
+        // Chatbot Toggle
+        function toggleChatbot() {
+            document.getElementById('chatbotWindow').classList.toggle('active');
+        }
 
-  const systemPrompt = `You are Bassam Aljazzar's AI assistant. Your role is to provide information about Bassam and answer questions about mechatronics engineering.
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('navLinks').classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Nav Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Advanced AI Chatbot with Function Calling
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            if (window.__aiBusy) {
+                addChatMessage(currentLang === 'ar' ? '⏳ انتظر قليلاً...' : '⏳ Please wait...', 'ai');
+                return;
+            }
+
+            const now = Date.now();
+            const timeSinceLastRequest = now - lastRequestTime;
+            
+            if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
+                const waitTime = Math.ceil((MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000);
+                addChatMessage(
+                    currentLang === 'ar' 
+                        ? `⏱️ انتظر ${waitTime} ثانية قبل الرسالة التالية` 
+                        : `⏱️ Wait ${waitTime}s before next message`,
+                    'ai'
+                );
+                return;
+            }
+
+            window.__aiBusy = true;
+            lastRequestTime = now;
+
+            const thinkingMsg = addChatMessage(
+                currentLang === 'ar' ? '🤖 جاري التفكير...' : '🤖 AI is thinking...', 
+                'ai', 
+                true
+            );
+
+            const systemPromptEn = `You are Bassam Aljazzar's AI assistant. Your role is to provide information about Bassam and answer questions about mechatronics engineering.
 
 ABOUT BASSAM:
 - Name: Bassam Walid Aljazzar
-- Role: Mechatronics Engineer / Robotics Engineer
+- Role: Mechatronics Engineer / Robotics Engineer / AI Portfolio Designer
 - Location: Abu Dhabi, UAE
 - Experience: 8 years in robotics, automation, and innovation
 - Nationality: Palestinian
 - Languages: Arabic (Native), English (Advanced)
 
-EDUCATION:
-- BSc in Mechatronics Engineering from Al-Azhar University-Gaza (2011-2017)
-- Graduation Project: "Shrimp Rover Robot" - a six-wheeled robot inspired by shrimp movement
-
 CURRENT POSITION (June 2021 - Present):
 - Mechatronics Engineer at Tatweer Middle East and Africa
 - Consultant at UAE Ministry of Interior's Manufacturing Innovation Laboratory
-- Develops innovative solutions, Python software, and embedded systems
-- Conducts training courses and workshops
+
+NEW SERVICE - AI PORTFOLIO DESIGN:
+Bassam now offers professional portfolio website design services with integrated AI chatbots:
+
+**Live Demo Available:**
+A live working example of Bassam's portfolio work is available at: https://bassamaljazzar93.github.io/portfolio/
+This demo showcases:
+- Interactive AI chatbot with Arabic/English support
+- Modern terminal-style interface
+- 3D interactive elements
+- Multi-language RTL/LTR support
+- Analytics integration
+- Responsive design for all devices
+
+**ADDITIONAL SERVICES:**
+
+1. **3D Design & Manufacturing:**
+   - Professional 3D CAD design using SolidWorks, Fusion 360, AutoCAD
+   - Laser cutting and engraving services on wood
+   - 3D printing services for prototyping and production
+   - Complete manufacturing solutions from concept to physical product
+
+2. **Innovation Consulting:**
+   - Support for innovative projects and ideas
+   - Technical feasibility studies
+   - Project development support
+   - Mechatronics and robotics consulting
+   - Innovation workshops and training
+
+3. **AI Playground (Free Tool):**
+   - Free AI tools available at AI Playground page
+   - AI chat capabilities
+   - Text-to-speech conversion
+   - Content moderation to ensure safe and appropriate usage
+   - Powered by Pollinations.AI
+
+**Pricing Plans:**
+1. Basic ($299): Single page portfolio, basic AI chatbot, responsive design, contact form, 5 sections, 2 weeks delivery
+2. Professional ($599 - POPULAR): Multi-page portfolio, advanced AI chatbot, 3D elements, multi-language (2 langs), analytics, custom animations, 3-4 weeks delivery, priority support (45 days)
+
+**Key Features:**
+- AI-powered chatbots trained on your data
+- Multi-language support (Arabic/English and more)
+- 3D interactive elements using Spline
+- Modern responsive designs
+- 2-4 weeks delivery time depending on complexity
+- Support included (30-45 days depending on plan)
+
+**Technology Stack:**
+- Custom HTML/CSS/JavaScript
+- AI integration with function calling
+- 3D viewer integration
+- Multi-language RTL/LTR support
+- Analytics tracking
 
 KEY PROJECTS:
-1. Bu Saif Humanoid Robot (2020-2021): Python-based robot for mini-mental state examination (MMSE) for elderly patients with cognitive functions, in collaboration with UAE University and Dubai Health Authority
-2. Bu Saif Humanoid Robot (2019): Arabic-speaking humanoid robot presented at GITEX 2019 Exhibition in Dubai
-3. Meta Touch Project (2020): Touchless elevator button system to prevent COVID-19 transmission, now in commercial production
-4. US Patent 11573635: Contributed to developing face mask with EMG sensors for communication. The patent document can be viewed by clicking the red mask in the 3D virtual lab.
-5. Shrimp Rover Robot (2016): Graduation project with six-wheeled design for obstacle navigation
+1. Bu Saif Humanoid Robot (2020-2021): Python-based robot for mini-mental state examination (MMSE)
+2. Bu Saif Robot GITEX 2019: Arabic-speaking humanoid robot
+3. Meta Touch Project (2020): Touchless elevator system
+4. US Patent 11573635: Face mask with EMG sensors. The patent can be viewed by clicking the red mask in the 3D virtual lab.
 
 TECHNICAL SKILLS:
-- 3D Design: SolidWorks, Fusion 360, AutoCAD (Expert level)
+- 3D Design: SolidWorks, Fusion 360, AutoCAD (Expert)
 - Programming: Python (Experienced), ROS, Embedded Systems (Expert)
-- Robotics & Electronics: Expert in robotics, electronics hardware, Proteus
-- Manufacturing: CNC Machines, Laser Cutting, 3D Printing (Expert)
-
-WORK EXPERIENCE:
-- Research Assistant at UAE University (May 2019 - May 2021): Led Bu Saif robot project, COVID-19 prototypes
-- Mechatronics Engineer at Fadel Al Dhaheri General Trading (Nov 2018 - Apr 2019): Equipment maintenance
-- Mechatronics Engineer at Flash Tech Company (Jun 2017 - Nov 2017): Solar energy systems and PLC programming
-
-INTERESTS:
-- Drawing, 3D Designing, Kung Fu, Robotics
+- Web Development: HTML, CSS, JavaScript, AI Integration
+- Robotics & Electronics: Expert level
 
 CONTACT:
 - Email: b_aljazzar@yahoo.com
 - Phone: +971 56 611 3381
 - LinkedIn: linkedin.com/in/bassam-aljazzar
 
-MECHATRONICS ENGINEERING:
-Mechatronics is a multidisciplinary field combining mechanical, electrical, and computer engineering to create efficient, reliable, and versatile systems. It includes robotics, automation, control systems, embedded systems, and IoT.
+When users ask about the patent (براءة الاختراع, patent document, US11573635, face mask patent), use the show_patent_in_3d_lab function to highlight it in the virtual lab.
 
-When answering:
-- Be helpful, professional, and friendly
-- Focus on Bassam's expertise in robotics and mechatronics
-- Explain technical concepts clearly
-- Highlight his projects and achievements
-- If asked about topics outside Bassam's portfolio or mechatronics, politely redirect to relevant topics
-- Keep responses concise but informative
-- When users ask about the patent (براءة الاختراع, patent document, US11573635, face mask patent), use the show_patent_in_3d_lab function to highlight it in the virtual lab`;
+When users ask about portfolio services, website design, or AI portfolio, provide detailed information about the service offerings and pricing plans.`;
 
-  const thinkingDiv = document.createElement('div');
-  thinkingDiv.className = 'output-line';
-  thinkingDiv.innerHTML = `<span style="color:#888;font-style:italic;">🤖 AI is thinking...</span>`;
-  terminalOutput.appendChild(thinkingDiv);
-  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            const systemPromptAr = `أنت المساعد الذكي لبسام الجزار. دورك تقديم معلومات عن بسام والإجابة عن أسئلة هندسة الميكاترونكس.
 
-  const recentHistory = chatHistory.slice(-8);
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    ...recentHistory,
-    { role: 'user', content: userMessage }
-  ];
+معلومات عن بسام:
+- الاسم: بسام وليد الجزار
+- الوظيفة: مهندس ميكاترونكس / مهندس روبوتات / مصمم بورتفوليو بالذكاء الاصطناعي
+- الموقع: أبوظبي، الإمارات
+- الخبرة: 8 سنوات في الروبوتات والأتمتة والابتكار
+- الجنسية: فلسطيني
+- اللغات: عربي (لغة أم)، إنجليزي (متقدم)
 
-  console.log(`📤 Sending ${messages.length} messages to API`);
+الوظيفة الحالية (يونيو 2021 - حتى الآن):
+- مهندس ميكاترونكس في شركة تطوير الشرق الأوسط وأفريقيا
+- مستشار في مختبر الابتكار التصنيعي بوزارة الداخلية الإماراتية
 
-  // 🔧 Tools definition
-  const tools = [
-    {
-      type: "function",
-      function: {
-        name: "show_patent_in_3d_lab",
-        description: "Highlights and activates the patent document view in the 3D virtual lab. Use this when user asks about the patent, wants to see the patent document, or asks about US Patent 11573635 or the face mask patent.",
-        parameters: {
-          type: "object",
-          properties: {},
-          required: []
-        }
-      }
-    }
-  ];
+الخدمة الجديدة - تصميم بورتفوليو بالذكاء الاصطناعي:
+بسام يقدم الآن خدمات تصميم مواقع بورتفوليو احترافية مع روبوتات محادثة ذكية:
 
-  async function tryAPI(attempt = 1) {
-    console.log(`🔄 Attempt ${attempt}/2`);
-    
-    // POST attempt with Function Calling
-    try {
-      console.log('📮 Trying POST with Function Calling...');
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
-      
-      const response = await fetch('https://text.pollinations.ai/openai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: messages,
-          model: 'openai',
-          seed: 42,
-          referrer: 'bassamaljazzar93.github.io',
-          tools: tools,
-          tool_choice: 'auto' // الـ AI يقرر متى يستخدم الـ function
-        }),
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      
-      console.log(`📥 POST Response: ${response.status} ${response.statusText}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        const message = data?.choices?.[0]?.message;
-        
-        if (!message) {
-          throw new Error('No message in response');
-        }
-        
-        // 🎯 فحص إذا الـ AI استدعى function
-        if (message.tool_calls && message.tool_calls.length > 0) {
-          console.log('🔧 AI requested function call!');
-          
-          const toolCall = message.tool_calls[0];
-          console.log(`📞 Calling: ${toolCall.function.name}`);
-          
-          if (toolCall.function.name === 'show_patent_in_3d_lab') {
-            // 🎬 شغّل الـ function
-            const result = triggerPatentView();
-            console.log('✅ Function executed:', result);
-            
-            // 🔄 أرجع الـ result للـ AI عشان يكمل الرد
-            messages.push(message); // رسالة الـ AI مع tool_call
-            messages.push({
-              role: 'tool',
-              tool_call_id: toolCall.id,
-              name: toolCall.function.name,
-              content: JSON.stringify(result)
-            });
-            
-            // 🔁 طلب ثاني للحصول على الرد النهائي
-            const secondResponse = await fetch('https://text.pollinations.ai/openai', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                messages: messages,
-                model: 'openai',
-                seed: 42,
-                referrer: 'bassamaljazzar93.github.io'
-              })
-            });
-            
-            if (secondResponse.ok) {
-              const finalData = await secondResponse.json();
-              const finalText = finalData?.choices?.[0]?.message?.content;
-              if (finalText) {
-                console.log('✅ POST Success with Function!');
-                return finalText;
-              }
-            }
-          }
-        }
-        
-        // رد عادي بدون function call
-        const text = message.content;
-        if (text) {
-          console.log('✅ POST Success!');
-          return text;
-        }
-      }
-      
-      if (response.status === 429) {
-        console.log('🚫 Rate limit hit (429)');
-        throw new Error('RATE_LIMIT');
-      }
-      
-      const errorText = await response.text().catch(() => 'no body');
-      console.log('❌ POST failed:', errorText);
-      
-    } catch (e) {
-      if (e.message === 'RATE_LIMIT') throw e;
-      console.log('❌ POST error:', e.message);
-    }
+**عرض مباشر متاح:**
+مثال حي على عمل بسام متاح على: https://bassamaljazzar93.github.io/portfolio/
+هذا العرض يوضح:
+- روبوت محادثة ذكي بدعم العربية/الإنجليزية
+- واجهة حديثة بأسلوب الطرفية (terminal)
+- عناصر ثلاثية الأبعاد تفاعلية
+- دعم متعدد اللغات RTL/LTR
+- تكامل التحليلات
+- تصميم متجاوب لجميع الأجهزة
 
-    // GET fallback (بدون function calling)
-    try {
-      console.log('📮 Trying GET fallback...');
-      const lastAssistant = [...recentHistory]
-        .reverse()
-        .find(m => m.role === 'assistant')?.content || '';
-      
-      const prompt = [
-        lastAssistant ? `Previous: ${lastAssistant.substring(0, 150)}` : '',
-        `User: ${userMessage}`
-      ].filter(Boolean).join('\n\n');
+**الخدمات الإضافية:**
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
-      
-      const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=42&referrer=bassamaljazzar93.github.io&system=${encodeURIComponent(systemPrompt)}`;
-      
-      const response = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeoutId);
-      
-      console.log(`📥 GET Response: ${response.status} ${response.statusText}`);
-      
-      if (response.ok) {
-        const text = await response.text();
-        if (text) {
-          console.log('✅ GET Success!');
-          
-          // 🔍 Keyword detection كـ fallback
-          const patentKeywords = ['patent', 'براءة', '11573635', 'mask', 'قناع'];
-          if (patentKeywords.some(kw => text.toLowerCase().includes(kw) || userMessage.toLowerCase().includes(kw))) {
-            console.log('🎯 Patent keyword detected in fallback');
-            setTimeout(() => triggerPatentView(), 500);
-          }
-          
-          return text;
-        }
-      }
-      
-      if (response.status === 429) {
-        console.log('🚫 Rate limit hit (429)');
-        throw new Error('RATE_LIMIT');
-      }
-      
-    } catch (e) {
-      if (e.message === 'RATE_LIMIT') throw e;
-      console.log('❌ GET error:', e.message);
-    }
+1. **التصميم والتصنيع ثلاثي الأبعاد:**
+   - تصميم CAD ثلاثي الأبعاد احترافي باستخدام SolidWorks، Fusion 360، AutoCAD
+   - خدمات القطع والحفر بالليزر على الخشب
+   - خدمات الطباعة ثلاثية الأبعاد للنماذج الأولية والإنتاج
+   - حلول تصنيع كاملة من الفكرة إلى المنتج النهائي
 
-    if (attempt < 2) {
-      console.log('⏳ Waiting 6s before retry...');
-      await new Promise(r => setTimeout(r, 6000));
-      return tryAPI(attempt + 1);
-    }
-    
-    throw new Error('ALL_FAILED');
-  }
+2. **استشارات الابتكار:**
+   - دعم للمشاريع والأفكار المبتكرة
+   - دراسات الجدوى التقنية
+   - دعم تطوير المشاريع
+   - استشارات الميكاترونكس والروبوتات
+   - ورش عمل وتدريب الابتكار
 
-  try {
-    const text = await tryAPI();
-    thinkingDiv.remove();
-    
-    chatHistory.push(
-      { role: 'user', content: userMessage },
-      { role: 'assistant', content: text }
-    );
-    
-    if (chatHistory.length > 16) {
-      chatHistory = chatHistory.slice(-16);
-    }
-    
-    logChatMessage(userMessage, text);
-    console.log('✅ Chat completed successfully');
-    return `<span style="color:#5BCEFA;">🤖 AI:</span> ${text}`;
-    
-  } catch (error) {
-    thinkingDiv.remove();
-    console.error('💥 Final error:', error.message);
-    
-    if (error.message === 'RATE_LIMIT') {
-      return `<span style="color:#ffa500;">⚠️ تم تجاوز الحد المسموح. انتظر 6 ثواني</span>`;
-    }
-    
-    return `<span style="color:#ff6b6b;">❌ فشل الاتصال. جرّب مرة ثانية</span>`;
-  } finally {
-    window.__aiBusy = false;
-  }
-}
-        function getDirectory(path) {
-            if (path === '~') return fileSystem['~'];
-            
-            const parts = path.replace('~/', '').replace('~', '').split('/').filter(p => p);
-            let current = fileSystem['~'];
-            
-            for (const part of parts) {
-                if (!current.contents || !current.contents[part]) {
-                    return null;
-                }
-                current = current.contents[part];
-            }
-            
-            return current;
-        }
+3. **ملعب الذكاء الاصطناعي (أداة مجانية):**
+   - أدوات ذكاء اصطناعي مجانية متاحة في صفحة AI Playground
+   - قدرات محادثة AI
+   - تحويل النص إلى صوت
+   - مراقبة المحتوى لضمان استخدام آمن ومناسب
+   - مدعوم من Pollinations.AI
 
-        function getFile(filename) {
-            const dir = getDirectory(currentDir);
-            if (!dir || !dir.contents) return null;
-            return dir.contents[filename];
-        }
+**خطط الأسعار:**
+1. أساسي (299$): بورتفوليو صفحة واحدة، روبوت محادثة أساسي، تصميم متجاوب، نموذج تواصل، 5 أقسام
+2. محترف (599$ - الأشهر): بورتفوليو متعدد الصفحات، روبوت محادثة متقدم، عناصر 3D، دعم لغتين، تحليلات، حركات مخصصة
+3. للشركات (999$): كل ما في المحترف + إعداد نطاق مخصص، حركات متقدمة، 3+ لغات، دعم أولوية (60 يوم)، تحديثات شهرية
 
-        function addOutput(content, isCommand = false, commandText = '') {
-            const div = document.createElement('div');
-            div.className = 'output-line';
-            
-            if (isCommand) {
-                if (chatMode) {
-                    div.innerHTML = `<span style="color: #5BCEFA;">👤 You:</span> <span class="command">${commandText}</span>`;
-                } else {
-                    div.innerHTML = `<span class="username">bassam@portfolio</span><span class="separator">:</span><span class="directory">${currentDir}</span><span class="separator">$ </span><span class="command">${commandText}</span>`;
-                }
-            } else {
-                div.innerHTML = content;
-            }
-            
-            terminalOutput.appendChild(div);
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
+**المميزات الرئيسية:**
+- روبوتات محادثة ذكية مدربة على بياناتك
+- دعم متعدد اللغات (عربي/إنجليزي وأكثر)
+- عناصر ثلاثية الأبعاد تفاعلية
+- تصاميم حديثة متجاوبة
+- تكامل تحليلات (Google Sheets)
+- تسليم سريع: 3-5 أيام عمل
+- محسّن لمحركات البحث
+- دعم 30 يوم مشمول
 
-        function executeCommand(input) {
-            const trimmed = input.trim();
-            if (!trimmed) return;
+**التقنيات المستخدمة:**
+- HTML/CSS/JavaScript مخصص
+- تكامل ذكاء اصطناعي مع function calling
+- تكامل عارض 3D
+- دعم RTL/LTR متعدد اللغات
+- تتبع التحليلات
 
-            commandHistory.push(trimmed);
-            historyIndex = -1;
+المشاريع الرئيسية:
+1. روبوت بو سيف البشري (2020-2021): روبوت لفحص الحالة العقلية
+2. روبوت بو سيف جيتكس 2019: روبوت بشري يتحدث العربية
+3. مشروع ميتا تاتش (2020): نظام مصعد بدون لمس
+4. براءة اختراع أمريكية 11573635: قناع وجه بمستشعرات EMG. يمكن عرض البراءة بالنقر على القناع الأحمر في المختبر الافتراضي ثلاثي الأبعاد.
 
-            // Check if in chat mode
-            if (chatMode) {
-                if (trimmed.toLowerCase() === 'exit') {
-                    chatMode = false;
-                    chatHistory = [];
-                    currentDir = '~';
-                    currentDirElement.textContent = '~';
-                    addOutput('', true, trimmed);
-                    addOutput('<span style="color: #00ff00;">✓ Exited chat mode. Back to terminal.</span>');
-                    return;
-                }
+المهارات التقنية:
+- التصميم ثلاثي الأبعاد: سوليدووركس، فيوجن 360، أوتوكاد (خبير)
+- البرمجة: بايثون (متمرس)، ROS، الأنظمة المدمجة (خبير)
+- تطوير الويب: HTML، CSS، JavaScript، تكامل الذكاء الاصطناعي
+- الروبوتات والإلكترونيات: مستوى خبير
 
-                // Send message to AI
-                addOutput('', true, trimmed);
-                sendChatMessage(trimmed).then(response => {
-                    addOutput(response);
-                });
-                return;
-            }
+التواصل:
+- البريد: b_aljazzar@yahoo.com
+- الهاتف: 3381 611 56 971+
+- لينكدإن: linkedin.com/in/bassam-aljazzar
 
-            addOutput('', true, trimmed);
+عندما يسأل المستخدمون عن البراءة (براءة الاختراع، patent، US11573635، قناع الوجه)، استخدم دالة show_patent_in_3d_lab لإظهارها في المختبر الافتراضي.
 
-            const [cmd, ...args] = trimmed.split(' ');
-            const command = commands[cmd];
+عندما يسأل المستخدمون عن خدمات البورتفوليو، تصميم المواقع، أو بورتفوليو بالذكاء الاصطناعي، قدم معلومات تفصيلية عن الخدمات وخطط الأسعار.`;
 
-            const output = command ? command(args) : `bash: ${cmd}: command not found\nType 'help' for available commands.`;
+            const systemPrompt = currentLang === 'ar' ? systemPromptAr : systemPromptEn;
 
-            if (output !== null) {
-                addOutput(output);
-            }
-        }
+            const recentHistory = chatHistory.slice(-8);
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...recentHistory,
+                { role: 'user', content: message }
+            ];
 
-        // Nav click handler
-        function executeNavCommand(cmd) {
-            commandInput.value = cmd;
-            executeCommand(cmd);
-            commandInput.value = '';
-            // Don't auto-focus on mobile after nav command
-            if (window.innerWidth > 768) {
-                commandInput.focus();
-            }
-        }
-
-        // Event listeners
-        commandInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                executeCommand(commandInput.value);
-                commandInput.value = '';
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (commandHistory.length > 0) {
-                    historyIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1);
-                    commandInput.value = commandHistory[historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex !== -1) {
-                    historyIndex++;
-                    if (historyIndex >= commandHistory.length) {
-                        historyIndex = -1;
-                        commandInput.value = '';
-                    } else {
-                        commandInput.value = commandHistory[historyIndex];
+            const tools = [
+                {
+                    type: "function",
+                    function: {
+                        name: "show_patent_in_3d_lab",
+                        description: "Highlights and activates the patent document view in the 3D virtual lab. Use this when user asks about the patent, wants to see the patent document, or asks about US Patent 11573635 or the face mask patent.",
+                        parameters: {
+                            type: "object",
+                            properties: {},
+                            required: []
+                        }
                     }
                 }
-            } else if (e.key === 'Tab') {
-                e.preventDefault();
-                const matches = Object.keys(commands).filter(cmd => cmd.startsWith(commandInput.value.toLowerCase()));
-                if (matches.length === 1) {
-                    commandInput.value = matches[0];
+            ];
+
+            async function tryAPI(attempt = 1) {
+                console.log(`🔄 Attempt ${attempt}/2`);
+                
+                // POST attempt with Function Calling
+                try {
+                    console.log('📮 Trying POST with Function Calling...');
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
+                    const response = await fetch('https://text.pollinations.ai/openai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            messages: messages,
+                            model: 'openai',
+                            seed: 42,
+                            referrer: 'bassamaljazzar93.github.io',
+                            tools: tools,
+                            tool_choice: 'auto'
+                        }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    console.log(`📥 POST Response: ${response.status} ${response.statusText}`);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const message = data?.choices?.[0]?.message;
+                        
+                        if (!message) {
+                            throw new Error('No message in response');
+                        }
+                        
+                        // Check for function call
+                        if (message.tool_calls && message.tool_calls.length > 0) {
+                            console.log('🔧 AI requested function call!');
+                            
+                            const toolCall = message.tool_calls[0];
+                            console.log(`📞 Calling: ${toolCall.function.name}`);
+                            
+                            if (toolCall.function.name === 'show_patent_in_3d_lab') {
+                                const result = triggerPatentView();
+                                console.log('✅ Function executed:', result);
+                                
+                                messages.push(message);
+                                messages.push({
+                                    role: 'tool',
+                                    tool_call_id: toolCall.id,
+                                    name: toolCall.function.name,
+                                    content: JSON.stringify(result)
+                                });
+                                
+                                const secondResponse = await fetch('https://text.pollinations.ai/openai', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        messages: messages,
+                                        model: 'openai',
+                                        seed: 42,
+                                        referrer: 'bassamaljazzar93.github.io'
+                                    })
+                                });
+                                
+                                if (secondResponse.ok) {
+                                    const finalData = await secondResponse.json();
+                                    const finalText = finalData?.choices?.[0]?.message?.content;
+                                    if (finalText) {
+                                        console.log('✅ POST Success with Function!');
+                                        return finalText;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        const text = message.content;
+                        if (text) {
+                            console.log('✅ POST Success!');
+                            return text;
+                        }
+                    }
+                    
+                    if (response.status === 429) {
+                        console.log('🚫 Rate limit hit (429)');
+                        throw new Error('RATE_LIMIT');
+                    }
+                    
+                } catch (e) {
+                    if (e.message === 'RATE_LIMIT') throw e;
+                    console.log('❌ POST error:', e.message);
                 }
-            } else if (e.key === 'l' && e.ctrlKey) {
-                e.preventDefault();
-                commands.clear();
+
+                // GET fallback
+                try {
+                    console.log('📮 Trying GET fallback...');
+                    const lastAssistant = [...recentHistory]
+                        .reverse()
+                        .find(m => m.role === 'assistant')?.content || '';
+                    
+                    const prompt = [
+                        lastAssistant ? `Previous: ${lastAssistant.substring(0, 150)}` : '',
+                        `User: ${message}`
+                    ].filter(Boolean).join('\n\n');
+
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
+                    const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=42&referrer=bassamaljazzar93.github.io&system=${encodeURIComponent(systemPrompt)}`;
+                    
+                    const response = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    
+                    console.log(`📥 GET Response: ${response.status} ${response.statusText}`);
+                    
+                    if (response.ok) {
+                        const text = await response.text();
+                        if (text) {
+                            console.log('✅ GET Success!');
+                            
+                            const patentKeywords = ['patent', 'براءة', '11573635', 'mask', 'قناع'];
+                            if (patentKeywords.some(kw => text.toLowerCase().includes(kw) || message.toLowerCase().includes(kw))) {
+                                console.log('🎯 Patent keyword detected in fallback');
+                                setTimeout(() => triggerPatentView(), 500);
+                            }
+                            
+                            return text;
+                        }
+                    }
+                    
+                    if (response.status === 429) {
+                        console.log('🚫 Rate limit hit (429)');
+                        throw new Error('RATE_LIMIT');
+                    }
+                    
+                } catch (e) {
+                    if (e.message === 'RATE_LIMIT') throw e;
+                    console.log('❌ GET error:', e.message);
+                }
+
+                if (attempt < 2) {
+                    console.log('⏳ Waiting 6s before retry...');
+                    await new Promise(r => setTimeout(r, 6000));
+                    return tryAPI(attempt + 1);
+                }
+                
+                throw new Error('ALL_FAILED');
             }
-        });
 
-        // Focus input only when clicking on terminal or input itself
-        terminalOutput.addEventListener('click', (e) => {
-            commandInput.focus();
-        });
-
-        commandInput.addEventListener('click', () => {
-            commandInput.focus();
-        });
-
-        // Prevent 3D viewer from focusing input
-        const viewerSection = document.querySelector('.viewer-section');
-        if (viewerSection) {
-            viewerSection.addEventListener('touchstart', (e) => {
-                // Don't focus input when touching 3D viewer
-                e.stopPropagation();
-            });
-            
-            viewerSection.addEventListener('click', (e) => {
-                // Don't focus input when clicking 3D viewer
-                e.stopPropagation();
-            });
+            try {
+                const text = await tryAPI();
+                thinkingMsg.remove();
+                
+                chatHistory.push(
+                    { role: 'user', content: message },
+                    { role: 'assistant', content: text }
+                );
+                
+                if (chatHistory.length > 16) {
+                    chatHistory = chatHistory.slice(-16);
+                }
+                
+                addChatMessage(text, 'ai');
+                logChatMessage(message, text);
+                console.log('✅ Chat completed successfully');
+                
+            } catch (error) {
+                thinkingMsg.remove();
+                console.error('💥 Final error:', error.message);
+                
+                if (error.message === 'RATE_LIMIT') {
+                    addChatMessage(
+                        currentLang === 'ar' 
+                            ? '⚠️ تم تجاوز الحد المسموح. انتظر 6 ثواني' 
+                            : '⚠️ Rate limit exceeded. Wait 6 seconds',
+                        'ai'
+                    );
+                } else {
+                    addChatMessage(
+                        currentLang === 'ar' 
+                            ? '❌ فشل الاتصال. جرّب مرة ثانية' 
+                            : '❌ Connection failed. Try again',
+                        'ai'
+                    );
+                }
+            } finally {
+                window.__aiBusy = false;
+            }
         }
 
-        // Welcome message
+        function addChatMessage(text, type, thinking = false) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            messageDiv.textContent = text;
+            if (thinking) messageDiv.style.opacity = '0.5';
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return messageDiv;
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Initialize
         window.addEventListener('load', async () => {
-            // Fix viewport height for mobile browsers (especially iOS)
-            const setViewportHeight = () => {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            };
-            
-            setViewportHeight();
-            window.addEventListener('resize', setViewportHeight);
-            window.addEventListener('orientationchange', setViewportHeight);
-            
-            // Get country and log visitor
             await getCountry();
             logVisitor();
-            
-            addOutput(`<pre style="color: #00ff00; line-height: 1.2; font-size: 0.75em;">
- ██████╗  █████╗ ███████╗███████╗ █████╗ ███╗   ███╗     █████╗ ██╗         ██╗ █████╗ ███████╗███████╗ █████╗ ██████╗ 
- ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗████╗ ████║    ██╔══██╗██║         ██║██╔══██╗╚══███╔╝╚══███╔╝██╔══██╗██╔══██╗
- ██████╔╝███████║███████╗███████╗███████║██╔████╔██║    ███████║██║         ██║███████║  ███╔╝   ███╔╝ ███████║██████╔╝
- ██╔══██╗██╔══██║╚════██║╚════██║██╔══██║██║╚██╔╝██║    ██╔══██║██║    ██   ██║██╔══██║ ███╔╝   ███╔╝  ██╔══██║██╔══██╗
- ██████╔╝██║  ██║███████║███████║██║  ██║██║ ╚═╝ ██║    ██║  ██║███████╗╚█████╔╝██║  ██║███████╗███████╗██║  ██║██║  ██║
- ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝  ╚═╝╚══════╝ ╚════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-</pre>`);
-            addOutput(`<span style="color: #5BCEFA; font-weight: bold;">Welcome to Bassam Aljazzar's Interactive Portfolio Terminal</span>
-
-<span style="color: #F5A9B8;">Mechatronics Engineer | Robotics Specialist | Innovation Consultant</span>
-<span style="color: #00ff00;">📍 Abu Dhabi, UAE | 8 Years Experience | Patent Holder (US11573635)</span>
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-            
-            // Don't auto-focus on mobile to prevent keyboard popup
-            if (window.innerWidth > 768) {
-                commandInput.focus();
-            }
         });
+
+        // Resize Preview Function for Live Demo
+        function resizePreview(width, height) {
+            const iframe = document.querySelector('iframe[title="Portfolio Live Demo"]');
+            const container = iframe.parentElement;
+            
+            // Center the iframe if it's smaller than container
+            if (width !== '100%') {
+                container.style.display = 'flex';
+                container.style.justifyContent = 'center';
+                container.style.alignItems = 'flex-start';
+                iframe.style.width = width;
+                iframe.style.height = height;
+                iframe.style.border = '2px solid var(--border)';
+                iframe.style.borderRadius = '10px';
+                iframe.style.marginTop = '1rem';
+            } else {
+                container.style.display = 'block';
+                iframe.style.width = width;
+                iframe.style.height = height;
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '0';
+                iframe.style.marginTop = '0';
+            }
+        }
     </script>
 </body>
 </html>
